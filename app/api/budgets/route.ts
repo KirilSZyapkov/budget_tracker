@@ -14,7 +14,7 @@ export const POST = withErrorHandling(async (req) => {
   const userId = await getUserIdOrThrow();
   const body = await req.json();
   const parsed = budgetZodSchema.parse(body);
-  const createNewBudget = await createBudget(userId, Number(parsed.year));
+  const createNewBudget = await createBudget(userId, parsed.year);
 
   return Response.json(createNewBudget, {
     status: 201,
