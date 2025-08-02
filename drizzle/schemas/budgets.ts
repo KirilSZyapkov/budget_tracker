@@ -5,5 +5,5 @@ export const budgets = pgTable("budgets", {
   userId: text("user_id").notNull(), // Clerk userId
   year: integer("year").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull()
+  updatedAt: timestamp("updated_at").defaultNow()
 })

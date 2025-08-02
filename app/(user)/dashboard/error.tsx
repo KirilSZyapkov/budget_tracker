@@ -1,12 +1,20 @@
 "use client";
 
-export default function Error(){
+import { useEffect } from "react";
+
+export default function Error({ error, reset }: { error: Error, reset: () => void }) {
+  useEffect(() => {
+    console.log("Error in Dashboard:", error);
+
+  }, [error])
+
   return(
-    <main className="min-h-screen bg-background px-4 py-20 flex flex-col items-center justify-center text-center">
-      <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Error</h1>
-      <p className="mt-4 text-lg md:text-xl text-muted-foreground">
-        Something went wrong. Please try again later.
-      </p>
-    </main>
+    <div className="text-center py-8">
+      <h2 className="text-xl font-semibold text-red-500">Възникна грешка</h2>
+      <p className="mb-4">{error.message}</p>
+      <button onClick={() => reset()} className="px-4 py-2 bg-blue-500 text-white rounded">
+        Презареди
+      </button>
+    </div>
   )
 }
