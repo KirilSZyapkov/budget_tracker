@@ -8,11 +8,7 @@ import { revalidatePath } from "next/cache";
 export async function getUserBudget(userId: string) {
 
   const userBudgets = await db.select().from(budgets).where(eq(budgets.userId, userId));
-
-  if (userBudgets.length === 0) {
-    throw new NotFoundError("No budgets found for this user");
-  }
-
+  
   return userBudgets;
 }
 
