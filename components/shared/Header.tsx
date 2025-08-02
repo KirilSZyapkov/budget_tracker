@@ -4,7 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 export default async function Header() {
   const user = await currentUser();
   return (
-    <header className="w-full px-4 py-3 bg-white shadow-md flex items-center justify-between flex-wrap">
+    <header className="w-full px-4 py-3 bg-[#f0fcfd] shadow-md flex items-center justify-between flex-wrap">
       <div className="flex items-end gap-3">
         <h1 className="text-2xl font-bold text-blue-600">Budget Tracker</h1>
         <span className="hidden sm:inline-block text-gray-500 text-lg">
