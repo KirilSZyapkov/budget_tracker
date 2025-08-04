@@ -10,5 +10,5 @@ export const entries = pgTable("entries", {
   entryDate: date("entry_date"),
   note: text("note"),
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull()
+  updatedAt: timestamp("updated_at").defaultNow()
 })

@@ -6,5 +6,5 @@ export const categories = pgTable("categories", {
   name: text("name").notNull(),               // напр. "Заплата", "Наем", "Храна"
   type: text("type").notNull(),               // 'income' | 'bills' | 'expenses' | 'saving'
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull()
+  updatedAt: timestamp("updated_at").defaultNow()
 })

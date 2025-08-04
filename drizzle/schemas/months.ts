@@ -7,5 +7,5 @@ export const months = pgTable("months", {
   month: text("month").notNull(), // 1 - 12
   salaryDay: text("salary_day"), // напр. 25 → генерира се нов месец от тази дата нататък
   createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull()
+  updatedAt: timestamp("updated_at").defaultNow()
 })

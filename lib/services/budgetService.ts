@@ -9,7 +9,7 @@ export async function getUserBudget(userId: string) {
 
   const userBudgets = await db.select().from(budgets).where(eq(budgets.userId, userId));
   
-  return userBudgets;
+  return userBudgets || [];
 }
 
 export async function createBudget(userId: string, year: string) {
