@@ -71,12 +71,12 @@ export default function DashboardPage() {
         <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Budget Overview</h2>
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
-            <span className="text-sm text-gray-500 mb-1">Select Budget</span>
-            <SelectField />
+            <span className="text-sm text-gray-500 mb-1">Select Year</span>
+            <SelectField dataArr={allBudget} title={"Year"}/>
           </div>
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Month</span>
-            <SelectField />
+            <SelectField dataArr={allMonths} title={"Month"}/>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
