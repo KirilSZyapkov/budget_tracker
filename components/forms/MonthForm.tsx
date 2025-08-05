@@ -29,7 +29,8 @@ export default function MonthForm({budgetId, loading, setLoading}: Props) {
   const form = useForm<z.infer<typeof monthZodSchema>>({
     resolver: zodResolver(monthZodSchema),
     defaultValues: {
-      month: undefined, // Default value for year, can be adjusted as needed
+      month: undefined, 
+      salaryDay: undefined
     },
   })
 // да коригирам onSubmit функцията да създава месец вместо бюджет
@@ -37,13 +38,14 @@ export default function MonthForm({budgetId, loading, setLoading}: Props) {
   async function onSubmit(data: z.infer<typeof monthZodSchema>) {
     setLoading(true);
     try {
-      const year = data.month;
-      const response = await fetch("/api/budgets", {
+      const month = data.month;
+      const salaryDay = data.salaryDay;
+      const response = await fetch("/api/month", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ year }),
+        body: JSON.stringify({ month, salaryDay, budgetId }),
         cache: "no-store",
       })
       if (!response.ok) {
@@ -68,7 +70,7 @@ export default function MonthForm({budgetId, loading, setLoading}: Props) {
   }
 
   return (
-    // да добавя Input за деня на заплата
+
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
@@ -78,13 +80,22 @@ export default function MonthForm({budgetId, loading, setLoading}: Props) {
             <FormItem>
               <FormLabel>Month</FormLabel>
               <FormControl>
-                <Input placeholder="2025" {...field} />
+                <Input placeholder="01" {...field} />
               </FormControl>
               <FormDescription>
                 Please enter the month in the format MM (e.g., 01 for January).
               </FormDescription>
               <FormMessage />
+              <FormLabel>Salary Day</FormLabel>
+              <FormControl>
+                <Input placeholder="10.05" {...field} />
+              </FormControl>
+              <FormDescription>
+                Please enter the salary day in the format DD.MM (e.g., 10.05 for 10th of May).
+              </FormDescription>
+              <FormMessage />
             </FormItem>
+            
           )}
         />
         <Button type="submit" className="cursor-pointer" disabled={loading}>{loading ? "Creating..." : "Submit"}</Button>

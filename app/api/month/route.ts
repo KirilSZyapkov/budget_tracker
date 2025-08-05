@@ -2,21 +2,30 @@
 
 import { withErrorHandling } from "@/lib/api/handler"
 import { getUserIdOrThrow } from "@/lib/auth"
-import { getUserBudget, createBudget } from "@/lib/services/budgetService"
-import { budgetZodSchema } from "@/lib/validators";
+import { getUserMonths, createMonth } from "@/lib/services/monthService"
+import { monthZodSchema } from "@/lib/validators";
 
-export const GET = withErrorHandling(async () => {
+export const GET = withErrorHandling(async (req: Request) => {
   const userId = await getUserIdOrThrow();
-  const result = await getUserBudget(userId);
+  const { searchParams } = new URL(req.url);
+  const budgetId = searchParams.get("budgetId");
+  const result = await getUserMonths(budgetId!);
 
   return Response.json(result);
 })
 
 export const POST = withErrorHandling(async (req) => {
   const userId = await getUserIdOrThrow();
+  if (!userId) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const body = await req.json();
-  const parsed = budgetZodSchema.parse(body);
-  const createNewBudget = await createBudget(userId, parsed.year);
+  const { budgetId } = body;
+  if (!budgetId) {
+    return Response.json({ error: "Budget ID is required" }, { status: 400 });
+  }
+  const parsed = monthZodSchema.parse(body);
+  const createNewBudget = await createMonth(budgetId, parsed.month, parsed.salaryDay);
 
   return Response.json(createNewBudget, {
     status: 201,

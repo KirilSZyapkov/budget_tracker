@@ -6,4 +6,5 @@ export const budgetZodSchema = z.object({
 
 export const monthZodSchema = z.object({
   month: z.string().min(1, "Month is required!"),
+  salaryDay: z.string().min(1, "Salary day is required!"),
 })
