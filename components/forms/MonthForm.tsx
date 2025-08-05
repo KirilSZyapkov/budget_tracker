@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,21 +21,21 @@ import { toast } from "sonner";
 
 type Props = {
   budgetId: string;
-  loading: boolean;
-  setLoading: (loading: boolean) => void;
+  revalidate: boolean;
+  setRevalidate: (loading: boolean) => void;
 }
 
-export default function MonthForm({budgetId, loading, setLoading}: Props) {
+export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) {
+  const [loading, setLoading] = useState(false);
   
   const form = useForm<z.infer<typeof monthZodSchema>>({
     resolver: zodResolver(monthZodSchema),
     defaultValues: {
-      month: undefined, 
-      salaryDay: undefined
+      month: "", 
+      salaryDay: ""
     },
   })
-// да коригирам onSubmit функцията да създава месец вместо бюджет
-// в body да се праща month вместо year както и budgetId и деня на заплата
+
   async function onSubmit(data: z.infer<typeof monthZodSchema>) {
     setLoading(true);
     try {
@@ -54,6 +55,7 @@ export default function MonthForm({budgetId, loading, setLoading}: Props) {
         toast.success("Budget created successfully!");
         form.reset();
         setLoading(false);
+        setRevalidate(!revalidate); // Trigger revalidation
       }
     } catch (error: any) {
       console.error("Error creating budget:", error);
@@ -86,6 +88,15 @@ export default function MonthForm({budgetId, loading, setLoading}: Props) {
                 Please enter the month in the format MM (e.g., 01 for January).
               </FormDescription>
               <FormMessage />
+            </FormItem>
+            
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="salaryDay"
+          render={({ field }) => (
+            <FormItem>
               <FormLabel>Salary Day</FormLabel>
               <FormControl>
                 <Input placeholder="10.05" {...field} />

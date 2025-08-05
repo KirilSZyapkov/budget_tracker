@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +19,8 @@ import { Input } from "@/components/ui/input";
 import { budgetZodSchema } from "@/lib/validators";
 import { toast } from "sonner";
 
-export default function BudgetForm({loading, setLoading}: {loading: boolean, setLoading: (loading: boolean) => void}) {
+export default function BudgetForm({revalidate, setRevalidate}: {revalidate: boolean, setRevalidate: (loading: boolean) => void}) {
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof budgetZodSchema>>({
     resolver: zodResolver(budgetZodSchema),
@@ -45,6 +47,7 @@ export default function BudgetForm({loading, setLoading}: {loading: boolean, set
         toast.success("Budget created successfully!");
         form.reset();
         setLoading(false);
+        setRevalidate(!revalidate); // Trigger revalidation
       }
     } catch (error: any) {
       console.error("Error creating budget:", error);

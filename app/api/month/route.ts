@@ -1,5 +1,3 @@
-// да коригрирам сървисите и да импортна monthService
-
 import { withErrorHandling } from "@/lib/api/handler"
 import { getUserIdOrThrow } from "@/lib/auth"
 import { getUserMonths, createMonth } from "@/lib/services/monthService"
@@ -16,9 +14,6 @@ export const GET = withErrorHandling(async (req: Request) => {
 
 export const POST = withErrorHandling(async (req) => {
   const userId = await getUserIdOrThrow();
-  if (!userId) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
   const body = await req.json();
   const { budgetId } = body;
   if (!budgetId) {

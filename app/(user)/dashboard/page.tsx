@@ -5,20 +5,23 @@ import MonthForm from "@/components/forms/MonthForm";
 import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { budgets } from "@/drizzle/schemas/budgets";
+import { months } from "@/drizzle/schema";
+import SelectField from "@/components/shared/SelectField";
 
 type Budget = typeof budgets.$inferSelect;
+type Month = typeof months.$inferSelect;
 
 export default function DashboardPage() {
-  const [allBudget, setAllBudgets] = useState<Budget[] >([]);
-  const [loading, setLoading] = useState(false);
-  
+  const [allBudget, setAllBudgets] = useState<Budget[]>([]);
+  const [allMonths, setAllMonths] = useState<Month[]>([]);
+  const [revalidate, setRevalidate] = useState(false);
   const { userId, isLoaded, isSignedIn } = useAuth();
-  
+
 
   // const budgets = await getUserBudget(userId);
   useEffect(() => {
     async function fetchBudgets() {
-      const response = await fetch(`/api/budgets`,{
+      const response = await fetch(`/api/budgets`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -26,14 +29,15 @@ export default function DashboardPage() {
         cache: "no-store",
       });
       const data = await response.json();
-      
+
       setAllBudgets(data);
     }
     fetchBudgets();
-  }, [loading]);
-  
+  }, [revalidate]);
+
   const currentBudget = allBudget?.[allBudget.length - 1];
-  
+  const currentMonth = allMonths?.[allMonths.length - 1];
+
   if (!isLoaded) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
@@ -46,18 +50,39 @@ export default function DashboardPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background px-4 py-20 flex flex-col items-center justify-start text-center">
-      <section className="max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+    <main className="min-h-screen bg-background px-2 sm:px-4 py-10 sm:py-20 flex flex-col items-center justify-start">
+      <section className="w-full max-w-3xl mx-auto mb-8 px-2 sm:px-0 text-center">
+        <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold tracking-tight text-blue-700 mb-2">
           Dashboard
         </h1>
-        <p className="mt-4 text-lg md:text-xl text-muted-foreground">
+        <p className="mt-2 sm:mt-4 text-base sm:text-lg md:text-xl text-gray-500">
           Welcome to your personal finance dashboard. Here you can manage your budget, track expenses, and monitor savings.
         </p>
       </section>
-      <section>
-        <BudgetForm loading={loading} setLoading={setLoading}/>
-        <MonthForm budgetId={currentBudget?.id!} loading={loading} setLoading={setLoading}/>
+      <section className="w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
+          <BudgetForm revalidate={revalidate} setRevalidate={setRevalidate} />
+        </div>
+        <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
+          <MonthForm budgetId={currentBudget?.id!} revalidate={revalidate} setRevalidate={setRevalidate} />
+        </div>
+      </section>
+      <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
+        <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Budget Overview</h2>
+        <div className="flex flex-col sm:flex-row gap-4 mb-4">
+          <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
+            <span className="text-sm text-gray-500 mb-1">Select Budget</span>
+            <SelectField />
+          </div>
+          <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
+            <span className="text-sm text-gray-500 mb-1">Select Month</span>
+            <SelectField />
+          </div>
+        </div>
+        <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">
+          <h3 className="text-lg font-medium text-gray-700 mb-2">Year: <span className="font-bold text-blue-600">{currentBudget?.year ?? "—"}</span></h3>
+          <h4 className="text-md text-gray-600">Month: <span className="font-bold text-blue-600">{currentMonth?.month ?? "—"}</span></h4>
+        </div>
       </section>
     </main>
   );
