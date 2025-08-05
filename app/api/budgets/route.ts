@@ -2,12 +2,16 @@ import { withErrorHandling } from "@/lib/api/handler"
 import { getUserIdOrThrow } from "@/lib/auth"
 import { getUserBudget, createBudget } from "@/lib/services/budgetService"
 import { budgetZodSchema } from "@/lib/validators";
+import { NextResponse } from "next/server";
 
 export const GET = withErrorHandling(async () => {
   const userId = await getUserIdOrThrow();
+  console.log("GET /api/budgets userId:", userId);
+  
   const result = await getUserBudget(userId);
-
-  return Response.json(result);
+  console.log("GET /api/budgets result:", result);
+  
+  return NextResponse.json(result);
 })
 
 export const POST = withErrorHandling(async (req) => {
@@ -16,7 +20,7 @@ export const POST = withErrorHandling(async (req) => {
   const parsed = budgetZodSchema.parse(body);
   const createNewBudget = await createBudget(userId, parsed.year);
 
-  return Response.json(createNewBudget, {
+  return NextResponse.json(createNewBudget, {
     status: 201,
   })
 })

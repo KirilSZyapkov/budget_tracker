@@ -20,6 +20,8 @@ import { toast } from "sonner";
 import { useState } from "react";
 
 export default function MonthForm({budgetId}: {budgetId: string}) {
+  console.log("MonthForm 23:", budgetId);
+  
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof monthZodSchema>>({

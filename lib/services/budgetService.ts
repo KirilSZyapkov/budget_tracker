@@ -8,7 +8,7 @@ import { revalidatePath } from "next/cache";
 export async function getUserBudget(userId: string) {
 
   const userBudgets = await db.select().from(budgets).where(eq(budgets.userId, userId));
-  
+
   return userBudgets || [];
 }
 

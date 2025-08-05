@@ -6,24 +6,36 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { budgets } from "@/drizzle/schemas/budgets";
 
-
+type Budget = typeof budgets.$inferSelect;
 
 export default function DashboardPage() {
+  const [allBudget, setAllBudgets] = useState<Budget[] >([]);
   const { userId, isLoaded, isSignedIn } = useAuth();
-  const [allBudget, setAllBudgets] = useState<typeof budgets.$inferSelect[]>();
+  console.log(allBudget, "dashboard 14");
 
 
   // const budgets = await getUserBudget(userId);
   useEffect(() => {
     async function fetchBudgets() {
-      const response = await fetch(`/api/budgets`);
+      const response = await fetch(`/api/budgets`,{
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      });
       const data = await response.json();
+      console.log(data[0], "dashboard 22");
+      
       setAllBudgets(data);
     }
-
     fetchBudgets();
   }, [])
-  const currentBudget = allBudget?.pop();
+  console.log(allBudget, "dashboard 28");
+  
+  const currentBudget = allBudget?.[allBudget.length - 1];
+  console.log(currentBudget, "dashboard 31");
+  
   if (!isLoaded) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
