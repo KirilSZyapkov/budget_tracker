@@ -17,10 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { budgetZodSchema } from "@/lib/validators";
 import { toast } from "sonner";
-import { useState } from "react";
 
-export default function BudgetForm() {
-  const [loading, setLoading] = useState(false);
+export default function BudgetForm({loading, setLoading}: {loading: boolean, setLoading: (loading: boolean) => void}) {
 
   const form = useForm<z.infer<typeof budgetZodSchema>>({
     resolver: zodResolver(budgetZodSchema),

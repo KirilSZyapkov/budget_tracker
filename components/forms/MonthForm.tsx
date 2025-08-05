@@ -17,13 +17,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { monthZodSchema } from "@/lib/validators";
 import { toast } from "sonner";
-import { useState } from "react";
 
-export default function MonthForm({budgetId}: {budgetId: string}) {
-  console.log("MonthForm 23:", budgetId);
+type Props = {
+  budgetId: string;
+  loading: boolean;
+  setLoading: (loading: boolean) => void;
+}
+
+export default function MonthForm({budgetId, loading, setLoading}: Props) {
   
-  const [loading, setLoading] = useState(false);
-
   const form = useForm<z.infer<typeof monthZodSchema>>({
     resolver: zodResolver(monthZodSchema),
     defaultValues: {

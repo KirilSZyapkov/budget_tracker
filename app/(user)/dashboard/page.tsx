@@ -10,9 +10,10 @@ type Budget = typeof budgets.$inferSelect;
 
 export default function DashboardPage() {
   const [allBudget, setAllBudgets] = useState<Budget[] >([]);
+  const [loading, setLoading] = useState(false);
+  
   const { userId, isLoaded, isSignedIn } = useAuth();
-  console.log(allBudget, "dashboard 14");
-
+  
 
   // const budgets = await getUserBudget(userId);
   useEffect(() => {
@@ -25,16 +26,13 @@ export default function DashboardPage() {
         cache: "no-store",
       });
       const data = await response.json();
-      console.log(data[0], "dashboard 22");
       
       setAllBudgets(data);
     }
     fetchBudgets();
-  }, [])
-  console.log(allBudget, "dashboard 28");
+  }, [loading]);
   
   const currentBudget = allBudget?.[allBudget.length - 1];
-  console.log(currentBudget, "dashboard 31");
   
   if (!isLoaded) {
     return (
@@ -58,8 +56,8 @@ export default function DashboardPage() {
         </p>
       </section>
       <section>
-        <BudgetForm />
-        <MonthForm budgetId={currentBudget?.id!} />
+        <BudgetForm loading={loading} setLoading={setLoading}/>
+        <MonthForm budgetId={currentBudget?.id!} loading={loading} setLoading={setLoading}/>
       </section>
     </main>
   );
