@@ -1,13 +1,13 @@
 import db from "@/drizzle/db";
 import { months } from "@/drizzle/schemas/months";
-import { eq, and, asc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { revalidatePath } from "next/cache";
 
 export async function getUserMonths(budgetId: string){
   const userMonths = await db.select().from(months)
   .where(eq(months.budgetId, budgetId))
-  .orderBy(asc(months.month));
+  .orderBy(desc(months.createdAt));
 
   return userMonths || [];
 }

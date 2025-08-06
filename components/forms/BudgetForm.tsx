@@ -25,7 +25,7 @@ export default function BudgetForm({revalidate, setRevalidate}: {revalidate: boo
   const form = useForm<z.infer<typeof budgetZodSchema>>({
     resolver: zodResolver(budgetZodSchema),
     defaultValues: {
-      year: undefined, // Default value for year, can be adjusted as needed
+      year: "", // Default value for year, can be adjusted as needed
     },
   })
 

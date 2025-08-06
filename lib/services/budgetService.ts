@@ -1,13 +1,13 @@
 import db from "@/drizzle/db";
 import { budgets } from "@/drizzle/schemas/budgets";
-import { eq, and, asc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { revalidatePath } from "next/cache";
 
 
 export async function getUserBudget(userId: string) {
 
-  const userBudgets = await db.select().from(budgets).where(eq(budgets.userId, userId)).orderBy(asc(budgets.year));
+  const userBudgets = await db.select().from(budgets).where(eq(budgets.userId, userId)).orderBy(desc(budgets.year));
 
   return userBudgets || [];
 }
