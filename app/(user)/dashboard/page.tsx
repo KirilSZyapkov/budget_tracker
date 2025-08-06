@@ -7,7 +7,6 @@ import { useAuth } from "@clerk/nextjs";
 import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schema";
 import SelectField from "@/components/shared/SelectField";
-import  MONTH  from "@/constants/constatsData";
 
 type Budget = typeof budgets.$inferSelect;
 type Month = typeof months.$inferSelect;
@@ -33,9 +32,8 @@ export default function DashboardPage() {
       });
 
       const budgetData = await responseBudget.json();
-      const budgetId = budgetData?.[budgetData.length - 1]?.id;
 
-      const responseMonth = await fetch(`/api/month?budgetId=${budgetId}`, {
+      const responseMonth = await fetch(`/api/month?budgetId=${currentBudget?.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -47,11 +45,19 @@ export default function DashboardPage() {
 
       setAllBudgets(budgetData);
       setAllMonths(monthData);
-      setCurrentBudget(budgetData?.[budgetData.length - 1]);
-      setCurrentMonth(monthData?.[monthData.length - 1]);
+      setCurrentBudget(budgetData?.[0]);
+      setCurrentMonth(monthData?.[0]);
     }
     fetchData();
-  }, [revalidate]);
+  }, [revalidate, currentBudget]);
+
+  console.log(allMonths, "all Months");
+  console.log(currentBudget, "currentBudget");
+  
+ 
+  function onChangeHandler(value:string){
+
+  }
 
   if (!isLoaded) {
     return (
@@ -87,11 +93,11 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Year</span>
-            <SelectField dataArr={allBudget} title={"Year"} />
+            <SelectField dataArr={allBudget} title={"Year"} onChangeHandler={onChangeHandler}/>
           </div>
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Month</span>
-            <SelectField dataArr={allMonths} title={"Month"} />
+            <SelectField dataArr={allMonths} title={"Month"} onChangeHandler={onChangeHandler}/>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">

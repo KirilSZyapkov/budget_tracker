@@ -7,7 +7,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export default function SelectField({ dataArr, title }: { dataArr: any[], title: string }) {
+
+export default function SelectField({ dataArr, title, onChangeHandler }: { dataArr: any[], title: string, onChangeHandler: (value: string) => void }) {
   return (
     <Select>
       <SelectTrigger className="w-[280px]">
@@ -15,7 +16,7 @@ export default function SelectField({ dataArr, title }: { dataArr: any[], title:
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {dataArr?.map((item: any, index: number) => (
+          {dataArr.length > 0 && dataArr?.map((item: any, index: number) => (
             <SelectItem key={index} value={item[title.toLowerCase()]}>
               {item[title.toLowerCase()]}
             </SelectItem>
