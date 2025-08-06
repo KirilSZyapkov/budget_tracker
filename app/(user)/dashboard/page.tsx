@@ -14,29 +14,42 @@ type Month = typeof months.$inferSelect;
 export default function DashboardPage() {
   const [allBudget, setAllBudgets] = useState<Budget[]>([]);
   const [allMonths, setAllMonths] = useState<Month[]>([]);
+  const [currentBudget, setCurrentBudget] = useState<Budget>();
+  const [currentMonth, setCurrentMonth] = useState<Month>();
   const [revalidate, setRevalidate] = useState(false);
   const { userId, isLoaded, isSignedIn } = useAuth();
 
-
-  // const budgets = await getUserBudget(userId);
   useEffect(() => {
-    async function fetchBudgets() {
-      const response = await fetch(`/api/budgets`, {
+
+    async function fetchData() {
+      const responseBudget = await fetch(`/api/budgets`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
         cache: "no-store",
       });
-      const data = await response.json();
 
-      setAllBudgets(data);
+      const budgetData = await responseBudget.json();
+      const budgetId = budgetData?.[budgetData.length - 1]?.id;
+
+      const responseMonth = await fetch(`/api/month?budgetId=${budgetId}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      });
+
+      const monthData = await responseMonth.json();
+
+      setAllBudgets(budgetData);
+      setAllMonths(monthData);
+      setCurrentBudget(budgetData?.[budgetData.length - 1]);
+      setCurrentMonth(monthData?.[monthData.length - 1]);
     }
-    fetchBudgets();
+    fetchData();
   }, [revalidate]);
-
-  const currentBudget = allBudget?.[allBudget.length - 1];
-  const currentMonth = allMonths?.[allMonths.length - 1];
 
   if (!isLoaded) {
     return (
@@ -63,20 +76,20 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
           <BudgetForm revalidate={revalidate} setRevalidate={setRevalidate} />
         </div>
-        <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
+        {currentBudget?.id && <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
           <MonthForm budgetId={currentBudget?.id!} revalidate={revalidate} setRevalidate={setRevalidate} />
-        </div>
+        </div>}
       </section>
       <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
         <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Budget Overview</h2>
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Year</span>
-            <SelectField dataArr={allBudget} title={"Year"}/>
+            <SelectField dataArr={allBudget} title={"Year"} />
           </div>
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Month</span>
-            <SelectField dataArr={allMonths} title={"Month"}/>
+            <SelectField dataArr={allMonths} title={"Month"} />
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">

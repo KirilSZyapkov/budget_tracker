@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-export default function SelectField({ dataArr, title }: { dataArr: any, title: string }) {
+export default function SelectField({ dataArr, title }: { dataArr: any[], title: string }) {
   return (
     <Select>
       <SelectTrigger className="w-[280px]">
