@@ -7,6 +7,7 @@ import { useAuth } from "@clerk/nextjs";
 import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schema";
 import SelectField from "@/components/shared/SelectField";
+import DataList from "@/components/shared/DataList";
 
 type Budget = typeof budgets.$inferSelect;
 type Month = typeof months.$inferSelect;
@@ -52,6 +53,10 @@ export default function DashboardPage() {
     }
     fetchData();
   }, [revalidate]);
+
+  useEffect(()=>{
+
+  },[currentBudget, currentMonth])
 
   function onChange(e:any, title: string) {
   
@@ -119,6 +124,10 @@ export default function DashboardPage() {
           <h3 className="text-lg font-medium text-gray-700 mb-2">Year: <span className="font-bold text-blue-600">{currentBudget?.year ?? "—"}</span></h3>
           <h4 className="text-md text-gray-600">Month: <span className="font-bold text-blue-600">{currentMonth?.month ?? "—"}</span></h4>
         </div>
+      </section>
+      <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
+        <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Data List</h2>
+        <DataList />
       </section>
     </main>
   );

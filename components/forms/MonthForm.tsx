@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-
+import { useApiFetch } from "@/hooks/useApiFetch";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -41,15 +41,16 @@ export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) 
     try {
       const month = data.month;
       const salaryDay = data.salaryDay;
-      const response = await fetch("/api/month", {
+      const response = await useApiFetch("/api/month", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ month, salaryDay, budgetId }),
         cache: "no-store",
-      })
-      if (!response.ok) {
+      }, "Failed to create month");
+      
+      if (!response) {
         throw new Error("Failed to create month");
       } else {
         toast.success("Month added successfully!");

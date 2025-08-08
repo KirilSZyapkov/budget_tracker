@@ -3,20 +3,20 @@
 import { useState } from "react"
 import { z } from "zod"
 import { toast } from "sonner"
-// import { apiFetch } from "@/hooks/useApiFetch"
+import  {useApiFetch}  from "@/hooks/useApiFetch"
 import { Button } from "@/components/ui/button"
-// import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-// import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const schema = z.object({
   name: z.string().min(1, "Името е задължително"),
-  type: z.enum(["income", "bills", "expenses", "saving"], {
-    errorMap: () => ({ message: "Избери тип" }),
-  }),
+  // type: z.enum(["income", "bills", "expenses", "saving"], {
+  //   errorMap: () => ({ message: "Избери тип" }),
+  // }),
 })
 
-export function CategoryForm() {
+export default function DataForm() {
   const [form, setForm] = useState({ name: "", type: "" })
   const [loading, setLoading] = useState(false)
 
@@ -29,13 +29,13 @@ export function CategoryForm() {
     const parsed = schema.safeParse(form)
 
     if (!parsed.success) {
-      toast.error(parsed.error.errors[0].message)
+      toast.error(parsed.error.message)
       return
     }
 
     setLoading(true)
 
-    const result = await apiFetch("/api/categories", {
+    const result = await useApiFetch("/api/categories", {
       method: "POST",
       body: JSON.stringify(parsed.data),
     }, "Неуспешно създаване на категория")

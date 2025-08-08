@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { budgetZodSchema } from "@/lib/validators";
 import { toast } from "sonner";
+import { useApiFetch } from "@/hooks/useApiFetch";
 
 export default function BudgetForm({revalidate, setRevalidate}: {revalidate: boolean, setRevalidate: (loading: boolean) => void}) {
   const [loading, setLoading] = useState(false);
@@ -33,15 +34,15 @@ export default function BudgetForm({revalidate, setRevalidate}: {revalidate: boo
     setLoading(true);
     try {
       const year = data.year;
-      const response = await fetch("/api/budgets", {
+      const response = await useApiFetch("/api/budgets", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ year }),
         cache: "no-store",
-      })
-      if (!response.ok) {
+      }, "Failed to create budget");
+      if (!response) {
         throw new Error("Failed to create budget");
       } else {
         toast.success("Budget created successfully!");
