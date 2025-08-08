@@ -32,8 +32,11 @@ export default function DashboardPage() {
       });
 
       const budgetData = await responseBudget.json();
+      const currBudget = budgetData?.[0];
+      setCurrentBudget(currBudget);
+      setAllBudgets(budgetData);
 
-      const responseMonth = await fetch(`/api/month?budgetId=${currentBudget?.id}`, {
+      const responseMonth = await fetch(`/api/month?budgetId=${currBudget?.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -42,21 +45,33 @@ export default function DashboardPage() {
       });
 
       const monthData = await responseMonth.json();
+      const currMonth = monthData?.[0];
 
-      setAllBudgets(budgetData);
+      setCurrentMonth(currMonth);
       setAllMonths(monthData);
-      setCurrentBudget(budgetData?.[0]);
-      setCurrentMonth(monthData?.[0]);
     }
     fetchData();
-  }, [revalidate, currentBudget]);
+  }, [revalidate]);
 
-  console.log(allMonths, "all Months");
-  console.log(currentBudget, "currentBudget");
+  function onChange(e:any, title: string) {
   
- 
-  function onChangeHandler(value:string){
-
+    switch (title.toLowerCase()) {
+      case "month":
+          const selectedMonth = allMonths.find(({month})=> month === e);
+          if(selectedMonth){
+            setCurrentMonth(selectedMonth);
+          }         
+        break;
+          case "year":
+            const selectedYear = allBudget.find(({year})=> year === e);
+            if(selectedYear){
+              setCurrentBudget(selectedYear);    
+            }
+          break;
+      default:
+        break;
+    }
+    
   }
 
   if (!isLoaded) {
@@ -93,11 +108,11 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Year</span>
-            <SelectField dataArr={allBudget} title={"Year"} onChangeHandler={onChangeHandler}/>
+            <SelectField dataArr={allBudget} title={"Year"} onChange={onChange} />
           </div>
           <div className="flex-1 bg-white rounded-lg shadow p-4 flex flex-col items-center">
             <span className="text-sm text-gray-500 mb-1">Select Month</span>
-            <SelectField dataArr={allMonths} title={"Month"} onChangeHandler={onChangeHandler}/>
+            <SelectField dataArr={allMonths} title={"Month"} onChange={onChange} />
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-4 flex flex-col items-center">

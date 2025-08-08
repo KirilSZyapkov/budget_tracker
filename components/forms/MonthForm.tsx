@@ -50,16 +50,16 @@ export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) 
         cache: "no-store",
       })
       if (!response.ok) {
-        throw new Error("Failed to create budget");
+        throw new Error("Failed to create month");
       } else {
-        toast.success("Budget created successfully!");
+        toast.success("Month added successfully!");
         form.reset();
         setLoading(false);
         setRevalidate(!revalidate); // Trigger revalidation
       }
     } catch (error: any) {
-      console.error("Error creating budget:", error);
-      toast.error(error?.message || "Failed to create budget. Please try again.");
+      console.error("Error creating month:", error);
+      toast.error(error?.message || "Failed to create month. Please try again.");
     } finally {
       setLoading(false);
     }

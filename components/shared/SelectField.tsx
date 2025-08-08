@@ -5,12 +5,24 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/ui/select";
+
+import { budgets } from "@/drizzle/schemas/budgets";
+import { months } from "@/drizzle/schemas/months";
+
+type Budget = typeof budgets.$inferSelect;
+type Month = typeof months.$inferSelect;
+
+type Props = { 
+  dataArr: Budget[] | Month[], 
+  title: string, 
+  onChange: (e:any, title: string) => void,
+}
 
 
-export default function SelectField({ dataArr, title, onChangeHandler }: { dataArr: any[], title: string, onChangeHandler: (value: string) => void }) {
+export default function SelectField({ dataArr, title, onChange }: Props) {
   return (
-    <Select>
+    <Select onValueChange={(e)=>onChange(e, title)}>
       <SelectTrigger className="w-[280px]">
         <SelectValue placeholder={title} />
       </SelectTrigger>
