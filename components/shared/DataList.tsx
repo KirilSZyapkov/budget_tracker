@@ -64,7 +64,7 @@ export default function DataList() {
       </div>
       {/* Savings */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-blue-700 mb-2">Заделени пари</h2>
+        <h2 className="text-xl font-semibold text-blue-700 mb-2">Спестявания</h2>
         <DataForm />
         <div className="space-y-2">
           <div className="flex justify-between items-center border-b pb-2">
