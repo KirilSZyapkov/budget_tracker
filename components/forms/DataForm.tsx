@@ -73,7 +73,7 @@ export default function DataForm() {
   };
 
   return (
-    <Form>
+    <Form {...form}>
 
 
       <form onSubmit={handleSubmit} className="grid gap-4 p-4 w-full max-w-md">
