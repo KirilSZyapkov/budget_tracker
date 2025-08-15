@@ -43,7 +43,7 @@ export default function DataForm() {
     }
   })
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({...form, [e.target.name]: e.target.value})
+    
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,7 +67,7 @@ export default function DataForm() {
 
     if (result) {
       toast.success("Категория създадена успешно 🎉")
-      setForm({name: "", type: ""})
+      form.reset();
       // Optionally: refresh()
     }
   };

@@ -1,5 +1,5 @@
 import db from "@/drizzle/db";
-import { categories } from "@/drizzle/schemas/categories";
+import { categories } from "@/drizzle/schemas/incomes";
 import { eq, and } from "drizzle-orm";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { revalidatePath } from "next/cache";
@@ -32,12 +32,12 @@ export async function createCategory(userId: string, name: string, type: string)
   return newCreatedCategory;
 }
 
-export async function updateCategory(userId: string, id:string, data: Partial<typeof categories.$inferInsert>){
+export async function updateCategory(userId: string, id: string, data: Partial<typeof categories.$inferInsert>) {
 
   const [newUpdatedCategory] = await db.update(categories)
-  .set(data)
-  .where(and(eq(categories.id, id), eq(categories.userId, userId)))
-  .returning();
+    .set(data)
+    .where(and(eq(categories.id, id), eq(categories.userId, userId)))
+    .returning();
 
   if (!newUpdatedCategory) {
     throw new NotFoundError("Category not found or you do not have permission to update it");
@@ -47,11 +47,11 @@ export async function updateCategory(userId: string, id:string, data: Partial<ty
   return newUpdatedCategory;
 }
 
-export async function deleteCategory(userId: string, id: string){
+export async function deleteCategory(userId: string, id: string) {
 
   const [deleteCategory] = await db.delete(categories)
-  .where(and(eq(categories.id, id), eq(categories.userId, userId)))
-  .returning();
+    .where(and(eq(categories.id, id), eq(categories.userId, userId)))
+    .returning();
   revalidatePath("/dashboard");
 
   return deleteCategory;
