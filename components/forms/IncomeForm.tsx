@@ -7,7 +7,6 @@ import {useApiFetch} from "@/hooks/useApiFetch";
 import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Label} from "@/components/ui/label";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {
   Form,
   FormControl,
@@ -29,7 +28,7 @@ const schema = z.object({
   // }),
 });
 
-export default function DataForm() {
+export default function IncomeForm() {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof dataZodSchema>>({
@@ -74,9 +73,9 @@ export default function DataForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit} className="flex items-center justify-evenly w-full max-w-md border-2 border-red-500">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:flex-row md:gap-0 items-center justify-evenly w-full">
         <div>
-          <Label htmlFor="name">Име на категория</Label>
+          <Label htmlFor="name" className="flex justify-center mb-3">Име на категория</Label>
           <Input
             id="name"
             name="name"
@@ -87,25 +86,18 @@ export default function DataForm() {
         </div>
 
         <div>
-          <Label htmlFor="type">Тип</Label>
-          <Select
-            value={form.type}
-            onValueChange={(val: any) => setForm((prev) => ({...prev, type: val}))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Избери категория"/>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="income">Приход</SelectItem>
-              <SelectItem value="bills">Сметки</SelectItem>
-              <SelectItem value="expenses">Разходи</SelectItem>
-              <SelectItem value="saving">Спестявания</SelectItem>
-            </SelectContent>
-          </Select>
+          <Label htmlFor="type" className="flex justify-center mb-3">Тип</Label>
+           <Input
+            id="name"
+            name="name"
+            placeholder="Пример: Заплата, Наем"
+            value={form.name}
+            onChange={handleChange}
+          />
         </div>
 
-        <Button type="submit" disabled={loading}>
-          {loading ? "Създаване..." : "Създай категория"}
+        <Button type="submit" disabled={loading} className="cursor-pointer">
+          {loading ? "Loading..." : "Add"}
         </Button>
       </form>
     </Form>

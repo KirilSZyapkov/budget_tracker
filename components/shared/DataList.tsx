@@ -1,6 +1,6 @@
 "use client";
 
-import DataForm from "@/components/forms/DataForm";
+import DataForm from "@/components/forms/IncomeForm";
 
 export default function DataList() {
   return (
@@ -26,7 +26,7 @@ export default function DataList() {
       </div>
       
       {/* Expenses */}
-      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
+      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Expenses</h2>
         <DataForm />
         <div className="space-y-2">
@@ -45,7 +45,7 @@ export default function DataList() {
         </div>
       </div>
       {/* Savings */}
-      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
+      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Заделени пари</h2>
         <DataForm />
         <div className="space-y-2">
