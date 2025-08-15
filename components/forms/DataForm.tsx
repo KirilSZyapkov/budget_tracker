@@ -74,9 +74,7 @@ export default function DataForm() {
 
   return (
     <Form {...form}>
-
-
-      <form onSubmit={handleSubmit} className="grid gap-4 p-4 w-full max-w-md">
+      <form onSubmit={handleSubmit} className="flex items-center justify-evenly w-full max-w-md border-2 border-red-500">
         <div>
           <Label htmlFor="name">Име на категория</Label>
           <Input
