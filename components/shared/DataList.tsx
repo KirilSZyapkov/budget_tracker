@@ -1,13 +1,29 @@
 "use client";
 
 import IncomeForm from "@/components/forms/IncomeForm";
+import { incomes } from "@/drizzle/schemas/incomes";
+import { expenses } from "@/drizzle/schemas/expenses";
 import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schemas/months";
+import { useState, useEffect } from "react";
 
 type Budget = typeof budgets.$inferSelect;
 type Month = typeof months.$inferSelect;
+type Income = typeof incomes.$inferSelect;
+type Expenses = typeof expenses.$inferSelect;
 
 export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
+  const [currentIncome, setCurrentIncome] = useState<Income[]>([]);
+  const [currentExpenses, setCurrentExpenses] = useState<Expenses[]>([]);
+  const [revalidate, setRevalidate] = useState(false);
+
+  useEffect(()=>{
+    async function fetchData(){
+
+    }
+    fetchData();
+  },[currentBudget, currentMonth]);
+
   return (
     <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
       {/* Income */}

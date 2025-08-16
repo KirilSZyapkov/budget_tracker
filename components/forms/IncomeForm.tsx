@@ -18,7 +18,7 @@ import {
 import { useForm } from "react-hook-form";
 import { incomeZodSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { incomes } from "@/drizzle/schemas/incomes";
+import { th } from "zod/v4/locales";
 
 
 export default function IncomeForm({ userId, budgetId, monthId }: { userId?: string | null, budgetId?: string, monthId?: string }) {
@@ -40,8 +40,14 @@ export default function IncomeForm({ userId, budgetId, monthId }: { userId?: str
         toast.error("Validation failed: " + parsed.error.message);
         return;
       };
-      const name = data.name;
-      const amount = data.amount;
+      const name = data.name.trim();
+      const amount = data.amount.trim();
+
+      if (!name || !amount) {
+        toast.error("Name and amount are required");
+        setLoading(false);
+        throw new Error("Name and amount are required");
+      };
 
       const response = await useApiFetch("/api/incomes",{
         method:"POST",
@@ -99,7 +105,7 @@ export default function IncomeForm({ userId, budgetId, monthId }: { userId?: str
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Example: 1500EUR"
+                  placeholder="Example: 1500"
                   {...field}
                 />
               </FormControl>
