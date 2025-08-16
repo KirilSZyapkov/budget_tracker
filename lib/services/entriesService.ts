@@ -1,14 +1,14 @@
 import db from "@/drizzle/db";
-import { incomes } from "@/drizzle/schemas/incomes";
+import { entries } from "@/drizzle/schemas/entries";
 import { eq, and } from "drizzle-orm";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { revalidatePath } from "next/cache";
 
-export async function getUserIncomes(userId: string, monthId: string, budgetId: string) {
+export async function getUserEntries(userId: string, monthId: string, budgetId: string) {
 
   const userIncomes = await db.select()
-  .from(incomes)
-  .where(and(eq(incomes.userId, userId), eq(incomes.monthId, monthId), eq(incomes.budgetId, budgetId)));
+    .from(entries)
+    .where(and(eq(entries.userId, userId), eq(entries.monthId, monthId), eq(entries.budgetId, budgetId)));
 
   if (userIncomes.length === 0) {
     throw new NotFoundError("No incomes were found for this user");
@@ -17,17 +17,17 @@ export async function getUserIncomes(userId: string, monthId: string, budgetId: 
   return userIncomes;
 }
 
-export async function createIncome(userId: string, monthId: string, budgetId: string, name: string, amount: string ) {
+export async function createEntry(userId: string, monthId: string, budgetId: string, name: string, amount: string, type: string) {
   if (!name || !amount) {
     throw new ValidationError("Name and type are required");
   };
 
-  if(!userId || !monthId || !budgetId) {
+  if (!userId || !monthId || !budgetId) {
     throw new ValidationError("Unauthorized access, something went wrong!");
   };
 
-  const [newCreatedIncome] = await db.insert(incomes)
-    .values({ userId, name, amount, monthId, budgetId })
+  const [newCreatedIncome] = await db.insert(entries)
+    .values({ userId, name, amount, monthId, budgetId, type })
     .returning();
 
   if (!newCreatedIncome) {

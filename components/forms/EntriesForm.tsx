@@ -16,26 +16,31 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { incomeZodSchema } from "@/lib/validators";
+import { entriesZodSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { th } from "zod/v4/locales";
 
+type Props={
+  userId?: string | null;
+  budgetId?: string;
+  monthId?: string;
+}
 
-export default function IncomeForm({ userId, budgetId, monthId }: { userId?: string | null, budgetId?: string, monthId?: string }) {
+export default function EntriesForm({ userId, budgetId, monthId }: Props) {
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof incomeZodSchema>>({
-    resolver: zodResolver(incomeZodSchema),
+  const form = useForm<z.infer<typeof entriesZodSchema>>({
+    resolver: zodResolver(entriesZodSchema),
     defaultValues: {
       name: "",
       amount: "",
+      type: ""
     }
   })
 
-  async function onSubmit(data: z.infer<typeof incomeZodSchema>) {
+  async function onSubmit(data: z.infer<typeof entriesZodSchema>) {
     setLoading(true);
     try {
-      const parsed = incomeZodSchema.safeParse(data);
+      const parsed = entriesZodSchema.safeParse(data);
       if (!parsed.success) {
         toast.error("Validation failed: " + parsed.error.message);
         return;

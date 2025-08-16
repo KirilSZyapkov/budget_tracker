@@ -1,35 +1,33 @@
 "use client";
 
-import IncomeForm from "@/components/forms/IncomeForm";
-import { incomes } from "@/drizzle/schemas/incomes";
-import { expenses } from "@/drizzle/schemas/expenses";
+import IncomeForm from "@/components/forms/EntriesForm";
+import { entries } from "@/drizzle/schemas/entries";
 import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schemas/months";
 import { useState, useEffect } from "react";
 
 type Budget = typeof budgets.$inferSelect;
 type Month = typeof months.$inferSelect;
-type Income = typeof incomes.$inferSelect;
-type Expenses = typeof expenses.$inferSelect;
+type Entries = typeof entries.$inferSelect;
+
 
 export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
-  const [currentIncome, setCurrentIncome] = useState<Income[]>([]);
-  const [currentExpenses, setCurrentExpenses] = useState<Expenses[]>([]);
+  const [allEntries, setAllEntries] = useState<Entries[]>([]);
   const [revalidate, setRevalidate] = useState(false);
 
-  useEffect(()=>{
-    async function fetchData(){
+  useEffect(() => {
+    async function fetchData() {
 
     }
     fetchData();
-  },[currentBudget, currentMonth]);
+  }, [currentBudget, currentMonth]);
 
   return (
     <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
       {/* Income */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Incomes</h2>
-        <IncomeForm userId={userId} budgetId = {currentBudget?.id} monthId={currentMonth?.id}/>
+        <IncomeForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} />
         <div className="space-y-2">
           <div className="flex justify-between items-center border-b pb-2">
             <p className="text-gray-700">Заплата</p>

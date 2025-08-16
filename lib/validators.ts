@@ -10,7 +10,8 @@ export const monthZodSchema = z.object({
   salaryDay: z.string().min(1, "Salary day is required!"),
 });
 
-export const incomeZodSchema = z.object({
+export const entriesZodSchema = z.object({
   name: z.string().min(1, "Enter name of income!"),
   amount: z.string().min(1, "Enter amount!"),
+  type: z.string().min(1, "Type is required!")
 })
