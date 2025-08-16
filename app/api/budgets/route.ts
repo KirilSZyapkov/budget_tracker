@@ -5,9 +5,9 @@ import { budgetZodSchema } from "@/lib/validators";
 import { NextResponse } from "next/server";
 
 export const GET = withErrorHandling(async () => {
-  const userId = await getUserIdOrThrow();  
+  const userId = await getUserIdOrThrow();
   const result = await getUserBudget(userId);
-  
+
   return NextResponse.json(result);
 })
 
