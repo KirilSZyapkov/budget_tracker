@@ -1,6 +1,6 @@
 "use client";
 
-import DataForm from "@/components/forms/IncomeForm";
+import IncomeForm from "@/components/forms/IncomeForm";
 
 export default function DataList() {
   return (
@@ -8,7 +8,7 @@ export default function DataList() {
       {/* Income */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Incomes</h2>
-        <DataForm />
+        <IncomeForm />
         <div className="space-y-2">
           <div className="flex justify-between items-center border-b pb-2">
             <p className="text-gray-700">Заплата</p>
@@ -28,7 +28,7 @@ export default function DataList() {
       {/* Expenses */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Expenses</h2>
-        <DataForm />
+        {/* <DataForm /> */}
         <div className="space-y-2">
           <div className="flex justify-between items-center border-b pb-2">
             <p className="text-gray-700">Храна</p>
@@ -46,8 +46,8 @@ export default function DataList() {
       </div>
       {/* Savings */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
-        <h2 className="text-xl font-semibold text-blue-700 mb-2">Заделени пари</h2>
-        <DataForm />
+        <h2 className="text-xl font-semibold text-blue-700 mb-2">Savings</h2>
+        {/* <DataForm /> */}
         <div className="space-y-2">
           <div className="flex justify-between items-center border-b pb-2">
             <p className="text-gray-700">За почивки</p>

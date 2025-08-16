@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import {useState} from "react";
-import {z} from "zod";
-import {toast} from "sonner";
-import {useApiFetch} from "@/hooks/useApiFetch";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
+import { useState } from "react";
+import { z } from "zod";
+import { toast } from "sonner";
+import { useApiFetch } from "@/hooks/useApiFetch";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -16,85 +16,74 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {useForm} from "react-hook-form";
-import { dataZodSchema } from "@/lib/validators";
-import {zodResolver} from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { incomeZodSchema } from "@/lib/validators";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { incomes } from "@/drizzle/schemas/incomes";
 
-
-const schema = z.object({
-  name: z.string().min(1, "Името е задължително"),
-  // type: z.enum(["income", "bills", "expenses", "saving"], {
-  //   errorMap: () => ({ message: "Избери тип" }),
-  // }),
-});
 
 export default function IncomeForm() {
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof dataZodSchema>>({
-    resolver: zodResolver(dataZodSchema),
+  const form = useForm<z.infer<typeof incomeZodSchema>>({
+    resolver: zodResolver(incomeZodSchema),
     defaultValues: {
-      type: "",
       name: "",
       amount: "",
-      entryDate: "",
-      note: ""
     }
   })
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const parsed = schema.safeParse(form);
+  async function onSubmit(data: z.infer<typeof incomeZodSchema>) {
 
+    const parsed = incomeZodSchema.safeParse(data);
     if (!parsed.success) {
-      toast.error(parsed.error.message)
-      return
+      toast.error("Validation failed: " + parsed.error.message);
+      return;
     }
-    ;
+    console.log("incomeForm: 53", data);
 
-    setLoading(true);
-
-    const result = await useApiFetch("/api/categories", {
-      method: "POST",
-      body: JSON.stringify(parsed.data),
-    }, "Неуспешно създаване на категория")
-
-    setLoading(false)
-
-    if (result) {
-      toast.success("Категория създадена успешно 🎉")
-      form.reset();
-      // Optionally: refresh()
-    }
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:flex-row md:gap-0 items-center justify-evenly w-full">
-        <div>
-          <Label htmlFor="name" className="flex justify-center mb-3">Име на категория</Label>
-          <Input
-            id="name"
-            name="name"
-            placeholder="Пример: Заплата, Наем"
-            value={form.name}
-            onChange={handleChange}
-          />
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4 lg:flex-row md:gap-0 items-center justify-evenly w-full">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                <Label htmlFor="name" className="flex justify-center mb-3">Name</Label>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Example: Salary, Rent"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
 
-        <div>
-          <Label htmlFor="type" className="flex justify-center mb-3">Тип</Label>
-           <Input
-            id="name"
-            name="name"
-            placeholder="Пример: Заплата, Наем"
-            value={form.name}
-            onChange={handleChange}
-          />
-        </div>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>
+                <Label htmlFor="amount" className="flex justify-center mb-3">Amount</Label>
+              </FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="Example: 1500EUR"
+                  {...field}
+                />
+              </FormControl>
+            </FormItem>
+
+          )}
+        />
 
         <Button type="submit" disabled={loading} className="cursor-pointer">
           {loading ? "Loading..." : "Add"}

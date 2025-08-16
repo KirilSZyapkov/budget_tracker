@@ -11,6 +11,6 @@ export const monthZodSchema = z.object({
 });
 
 export const incomeZodSchema = z.object({
-  name: z.string().min(1, "Enter name of expense!"),
+  name: z.string().min(1, "Enter name of income!"),
   amount: z.string().min(1, "Enter amount!"),
 })
