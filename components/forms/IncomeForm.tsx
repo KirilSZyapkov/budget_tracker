@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { incomes } from "@/drizzle/schemas/incomes";
 
 
-export default function IncomeForm() {
+export default function IncomeForm({ userId, budgetId, monthId }: { userId?: string | null, budgetId?: string, monthId?: string }) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof incomeZodSchema>>({
@@ -34,14 +33,37 @@ export default function IncomeForm() {
   })
 
   async function onSubmit(data: z.infer<typeof incomeZodSchema>) {
+    setLoading(true);
+    try {
+      const parsed = incomeZodSchema.safeParse(data);
+      if (!parsed.success) {
+        toast.error("Validation failed: " + parsed.error.message);
+        return;
+      };
+      const name = data.name;
+      const amount = data.amount;
 
-    const parsed = incomeZodSchema.safeParse(data);
-    if (!parsed.success) {
-      toast.error("Validation failed: " + parsed.error.message);
-      return;
+      const response = await useApiFetch("/api/incomes",{
+        method:"POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, amount, monthId, budgetId, userId }),
+        cache: "no-store",
+      }, "Failed to create income");
+
+      if(!response){
+        throw new Error("Failed to create income");
+      } else {
+        toast.success("Income added successfully!");
+        form.reset();
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error creating income:", error);
+      toast.error("Failed to create income");
     }
-    console.log("incomeForm: 53", data);
-
+    setLoading(false);
   };
 
   return (
@@ -61,6 +83,7 @@ export default function IncomeForm() {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
 
           )}
@@ -80,6 +103,7 @@ export default function IncomeForm() {
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
 
           )}

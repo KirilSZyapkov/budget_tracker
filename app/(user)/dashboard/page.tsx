@@ -127,7 +127,7 @@ export default function DashboardPage() {
       </section>
       <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
         <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Data List</h2>
-        <DataList />
+        <DataList currentMonth={currentMonth} currentBudget={currentBudget} userId={userId}/>
       </section>
     </main>
   );

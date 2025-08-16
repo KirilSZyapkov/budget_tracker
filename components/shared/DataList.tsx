@@ -1,14 +1,19 @@
 "use client";
 
 import IncomeForm from "@/components/forms/IncomeForm";
+import { budgets } from "@/drizzle/schemas/budgets";
+import { months } from "@/drizzle/schemas/months";
 
-export default function DataList() {
+type Budget = typeof budgets.$inferSelect;
+type Month = typeof months.$inferSelect;
+
+export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
   return (
     <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
       {/* Income */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Incomes</h2>
-        <IncomeForm />
+        <IncomeForm userId={userId} budgetId = {currentBudget?.id} monthId={currentMonth?.id}/>
         <div className="space-y-2">
           <div className="flex justify-between items-center border-b pb-2">
             <p className="text-gray-700">Заплата</p>
@@ -24,7 +29,7 @@ export default function DataList() {
           </div>
         </div>
       </div>
-      
+
       {/* Expenses */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Expenses</h2>

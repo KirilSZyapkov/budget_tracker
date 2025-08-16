@@ -1,7 +1,7 @@
 import { pgTable, uuid, numeric, timestamp, text } from "drizzle-orm/pg-core"
 import { months } from "./months"
 
-export const expenses = pgTable("entries", {
+export const expenses = pgTable("expenses", {
   id: uuid("id").defaultRandom().primaryKey(),
   userId: text("user_id").notNull(), // Clerk userId
   monthId: uuid("month_id").notNull().references(() => months.id, { onDelete: "cascade" }),
