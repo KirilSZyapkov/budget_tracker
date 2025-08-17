@@ -23,9 +23,10 @@ type Props={
   userId?: string | null;
   budgetId?: string;
   monthId?: string;
+  type?: string; // "income" or "expense"
 }
 
-export default function EntriesForm({ userId, budgetId, monthId }: Props) {
+export default function EntriesForm({ userId, budgetId, monthId, type }: Props) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof entriesZodSchema>>({
@@ -54,12 +55,12 @@ export default function EntriesForm({ userId, budgetId, monthId }: Props) {
         throw new Error("Name and amount are required");
       };
 
-      const response = await useApiFetch("/api/incomes",{
+      const response = await useApiFetch("/api/entries",{
         method:"POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, amount, monthId, budgetId, userId }),
+        body: JSON.stringify({ name, amount, monthId, budgetId, userId, type }),
         cache: "no-store",
       }, "Failed to create income");
 
