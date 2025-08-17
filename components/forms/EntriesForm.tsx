@@ -33,8 +33,7 @@ export default function EntriesForm({ userId, budgetId, monthId, type }: Props) 
     resolver: zodResolver(entriesZodSchema),
     defaultValues: {
       name: "",
-      amount: "",
-      type: ""
+      amount: ""
     }
   })
 
@@ -49,7 +48,7 @@ export default function EntriesForm({ userId, budgetId, monthId, type }: Props) 
       const name = data.name.trim();
       const amount = data.amount.trim();
 
-      if (!name || !amount) {
+      if (name==="" || amount ==="") {
         toast.error("Name and amount are required");
         setLoading(false);
         throw new Error("Name and amount are required");
