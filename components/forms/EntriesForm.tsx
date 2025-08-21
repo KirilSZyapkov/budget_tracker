@@ -18,15 +18,18 @@ import {
 import { useForm } from "react-hook-form";
 import { entriesZodSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { transformArray } from "@/lib/helpers";
+
 
 type Props={
   userId?: string | null;
   budgetId?: string;
   monthId?: string;
-  type?: string; // "income" or "expense"
+  type?: string; // "income" or "expense";
+  setAllEntries?: React.Dispatch<React.SetStateAction<any[]>>; // Optional setter for entries
 }
 
-export default function EntriesForm({ userId, budgetId, monthId, type }: Props) {
+export default function EntriesForm({ userId, budgetId, monthId, type, setAllEntries }: Props) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof entriesZodSchema>>({
@@ -66,6 +69,8 @@ export default function EntriesForm({ userId, budgetId, monthId, type }: Props) 
       if(!response){
         throw new Error("Failed to create income");
       } else {
+        const newEntry = transformArray([response]);
+        setAllEntries?.(prevEntries => [...prevEntries, ...newEntry]);
         toast.success("Income added successfully!");
         form.reset();
         setLoading(false);

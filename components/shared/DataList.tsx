@@ -6,7 +6,6 @@ import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schemas/months";
 import { useState, useEffect } from "react";
 import { useApiFetch } from "@/hooks/useApiFetch";
-import { toast } from "sonner";
 import { transformArray } from "@/lib/helpers";
 
 type Budget = typeof budgets.$inferSelect;
@@ -20,7 +19,6 @@ type Result = {
 
 export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
   const [allEntries, setAllEntries] = useState<Result[]>([]);
-  const [list, setList] = useState<Result[]>([]);
   const [revalidate, setRevalidate] = useState(false);
 
 
@@ -52,7 +50,7 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
       {/* Income */}
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Income</h2>
-        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="income" />
+        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="income" setAllEntries={setAllEntries}/>
         <div className="space-y-2">
           {allEntries.map(({ type, data }, index) => (
             type === "income" &&
@@ -66,7 +64,7 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
       </div>
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Expenses</h2>
-        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="expenses" />
+        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="expenses" setAllEntries={setAllEntries}/>
         <div className="space-y-2">
           {allEntries.map(({ type, data }, index) => (
             type === "expenses" &&
@@ -80,7 +78,7 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
       </div>
       <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
         <h2 className="text-xl font-semibold text-blue-700 mb-2">Savings</h2>
-        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="savings" />
+        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="savings" setAllEntries={setAllEntries}/>
         <div className="space-y-2">
           {allEntries.map(({ type, data }, index) => (
             type === "savings" &&

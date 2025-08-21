@@ -20,7 +20,7 @@ export function transformArray(arr: Item[]): Result[] {
 
   arr.forEach(item => {
     if (!map.has(item.type)) {
-      if (item.type === "expense") {
+      if (item.type === "expenses") {
         map.set(item.type, {
           data: [],
           type: item.type
