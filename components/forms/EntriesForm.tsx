@@ -90,7 +90,7 @@ export default function EntriesForm({ userId, budgetId, monthId, type }: Props) 
               </FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Example: Salary, Rent"
+                  placeholder={type === "income" ? "Example: Salary, Rent" : type === "expenses" ? "Example: Rent, Bills" : "Example: Emergency Fund"}
                   {...field}
                 />
               </FormControl>
