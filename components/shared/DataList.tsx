@@ -38,12 +38,17 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
 
       if (responseEntries) {
         setAllEntries(transformArray(responseEntries));
+      } else {
+        setAllEntries([]);
       };
     }
     fetchData();
-  }, [currentBudget, currentMonth]);
+  }, [currentBudget?.id, currentMonth?.id]);
 
   console.log(allEntries);
+  console.log("Current Budget:", currentBudget);
+  console.log("Current Month:", currentMonth);
+  
 
   return (
     <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
