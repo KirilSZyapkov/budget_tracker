@@ -19,9 +19,7 @@ type Result = {
 
 export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
   const [allEntries, setAllEntries] = useState<Result[]>([]);
-  const [revalidate, setRevalidate] = useState(false);
-
-
+  
   useEffect(() => {
     async function fetchData() {
       if (!currentBudget?.id || !currentMonth?.id) return;
@@ -62,7 +60,7 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
             data.map(({name, amount}, index) => (
               <div key={index} className="flex justify-between items-center border-b pb-2">
                 <p className="text-gray-700">{name}</p>
-                <p className="font-bold text-green-600">{amount}lv</p>
+                <p className="font-bold text-green-600">{amount}€</p>
               </div>)
             )))}
         </div>

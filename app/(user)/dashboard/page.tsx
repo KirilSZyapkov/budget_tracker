@@ -18,7 +18,7 @@ export default function DashboardPage() {
   const [currentBudget, setCurrentBudget] = useState<Budget>();
   const [currentMonth, setCurrentMonth] = useState<Month>();
   const [revalidate, setRevalidate] = useState(false);
-  const { userId, isLoaded, isSignedIn } = useAuth();
+  const { userId, isLoaded } = useAuth();
 
 
   useEffect(() => {
@@ -54,10 +54,6 @@ export default function DashboardPage() {
     fetchData();
   }, [revalidate]);
 
-  useEffect(()=>{
-
-  },[currentBudget, currentMonth])
-
   function onChange(e:any, title: string) {
   
     switch (title.toLowerCase()) {
@@ -77,8 +73,9 @@ export default function DashboardPage() {
         break;
     }
     
-  }
+  };
 
+ 
   if (!isLoaded) {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center">
