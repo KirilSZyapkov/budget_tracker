@@ -47,3 +47,7 @@ export function transformArray(arr: Item[]): Result[] {
   });
   return Array.from(map.values());
 }
+
+export function fmtCurrency(amount: string, currency: string = "EUR"):string {
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(parseFloat(amount));
+}
