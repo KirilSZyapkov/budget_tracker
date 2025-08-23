@@ -3,7 +3,7 @@
 import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { fmtCurrency } from "@/lib/helpers";
 
-type Slice = { name: "Income" | "Bills" | "Expenses" | "Saving"; value: number };
+type Slice = { name: string; value: string | number; };
 
 export default function MonthlyBreakdownDonut({ data }: { data: Slice[] }) {
   return (
