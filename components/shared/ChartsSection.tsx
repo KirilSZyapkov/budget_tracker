@@ -16,7 +16,7 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
       try {
         setLoading(true);
         const [ov] = await Promise.all([
-          useApiFetch(`/api/analytics/overview?monthId=${monthId}`, { cache: "no-store" }, "Failed to load overview data"),
+          useApiFetch(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
         ]);
         if (!cancel) {
           setOverview(ov)
