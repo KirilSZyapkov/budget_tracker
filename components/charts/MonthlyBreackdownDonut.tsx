@@ -1,21 +1,34 @@
 "use client";
 
-import { PieChart, Pie, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Card } from "@/components/ui/card";
 import { fmtCurrency } from "@/lib/helpers";
 
-type Slice = { name: string; value: string | number; };
+type Props = {
+  data: { name: string; value: number }[];
+};
 
-export default function MonthlyBreakdownDonut({ data }: { data: Slice[] }) {
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A020F0"];
+
+export default function MonthlyBreakdownDonut({ data }: Props) {
   return (
-    <div className="h-80 w-full rounded-2xl border p-4">
+    <Card className="p-4 h-80">
       <h3 className="font-semibold mb-2">Monthly Breakdown</h3>
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie dataKey="value" nameKey="name" data={data} innerRadius={60} outerRadius={100} />
-          <Tooltip formatter={(v: string) => fmtCurrency(v)} />
+        <PieChart width={730} height={250}>
+          <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" innerRadius={30} outerRadius={50} label/>
+
+          {data.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[index]} // различен цвят за всеки сектор
+            />
+          ))}
+          <Tooltip formatter={(v: number) => fmtCurrency(v)} />
           <Legend />
+          {/* Recharts ще ползва автоматични цветове; можеш да зададеш Cell-и ако искаш постоянна палитра */}
         </PieChart>
       </ResponsiveContainer>
-    </div>
+    </Card>
   );
 }

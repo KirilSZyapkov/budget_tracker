@@ -45,12 +45,18 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
   if (loading) return <div className="grid gap-4 md:grid-cols-3"><div className="h-80 rounded-xl bg-muted animate-pulse"></div><div className="h-80 rounded-xl bg-muted animate-pulse"></div><div className="h-80 rounded-xl bg-muted animate-pulse"></div></div>;
   if (!overview) return null;
 
+  console.log(overview);
+
+
   const donutData = [
     { name: "Income", value: overview.income },
     { name: "Bills", value: overview.bills },
     { name: "Expenses", value: overview.expenses },
     { name: "Saving", value: overview.saving },
   ];
+
+  console.log(donutData);
+  
 
   return (
     <section className="grid gap-4 md:grid-cols-3">
