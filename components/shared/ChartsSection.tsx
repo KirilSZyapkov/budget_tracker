@@ -4,8 +4,18 @@ import { useState, useEffect, use } from "react";
 import MonthlyBreakdownDonut from "@/components/charts/MonthlyBreackdownDonut";
 import { useApiFetch } from "@/hooks/useApiFetch";
 
+type OverviewResponse = {
+  income: number;
+  bills: number;
+  expenses: number; // total expenses excluding bills and saving
+  saving: number;
+  spent: number; // bills + expenses + saving
+  net: number; // income - spent
+  savingsRate: number; // saving / income
+};
+
 export default function ChartsSection({ budgetId, monthId }: { budgetId: string, monthId: string }) {
-  const [overview, setOverview] = useState<{ income: number, bills: number, expenses: number, saving: number } | null>(null);
+  const [overview, setOverview] = useState<{ income: number, bills: number, expenses: number, saving: number, spent: number, net: number, savingsRate: number } | null>(null);
   const [series, setSeries] = useState<{ label: string; income: number; spent: number; net: number }[]>([]);
   const [expensesByCat, setExpensesByCat] = useState<{ name: string; value: number }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -16,7 +26,7 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
       try {
         setLoading(true);
         const [ov] = await Promise.all([
-          useApiFetch(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
+          useApiFetch<OverviewResponse>(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
         ]);
         if (!cancel) {
           setOverview(ov)

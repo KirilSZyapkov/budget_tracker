@@ -57,7 +57,7 @@ export default function EntriesForm({ userId, budgetId, monthId, type, setAllEnt
         throw new Error("Name and amount are required");
       };
 
-      const response = await useApiFetch("/api/entries",{
+      const response: any = await useApiFetch("/api/entries",{
         method:"POST",
         headers: {
           "Content-Type": "application/json",
