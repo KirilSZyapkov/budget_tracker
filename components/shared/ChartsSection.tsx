@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
-import MonthlyBreakdownDonut from "@/components/charts/MonthlyBreackdownDonut";
+import { useState, useEffect } from "react";
 import { useApiFetch } from "@/hooks/useApiFetch";
+import MonthlyBreakdownDonut from "@/components/charts/MonthlyBreackdownDonut";
+import CategoryStackedBar from "@/components/charts/CategoryStackedBar";
+import IncomeVsSpentLine from "@/components/charts/IncomeVsSpentLine";
 
 type OverviewResponse = {
   income: number;
@@ -27,6 +29,8 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
         setLoading(true);
         const [ov] = await Promise.all([
           useApiFetch<OverviewResponse>(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
+          useApiFetch(`/api/analytics/monthly-series?budgetId=${budgetId}`),
+          useApiFetch(`/api/analytics/category-breakdown?monthId=${monthId}&type=EXPENSES`),
         ]);
         if (!cancel) {
           setOverview(ov)
@@ -56,11 +60,13 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
   ];
 
   console.log(donutData);
-  
+
 
   return (
-    <section className="w-full border-4">
+    <section className="flex flex-col gap-6 w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
       <MonthlyBreakdownDonut data={donutData} />
+      <IncomeVsSpentLine series={series} />
+      <CategoryStackedBar data={expensesByCat} title="Expenses by Category" />
     </section>
   );
 }
