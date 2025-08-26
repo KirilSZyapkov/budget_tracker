@@ -59,7 +59,7 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
   
 
   return (
-    <section className="grid gap-4 md:grid-cols-3">
+    <section className="w-full border-4">
       <MonthlyBreakdownDonut data={donutData} />
     </section>
   );
