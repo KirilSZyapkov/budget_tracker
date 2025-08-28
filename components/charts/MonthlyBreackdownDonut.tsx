@@ -12,7 +12,7 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A020F0"];
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
   if (!percent || percent === 0) return null;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.3;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
   const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
 
@@ -28,7 +28,7 @@ export default function MonthlyBreakdownDonut({ data }: Props) {
     <Card className="p-4 h-96 w-full border-2 border-red-500">
       <h3 className="font-semibold mb-2">Monthly Breakdown</h3>
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart width={500} height={500}>
+        <PieChart>
         <Pie
           data={data}
           cx="50%"
@@ -40,8 +40,8 @@ export default function MonthlyBreakdownDonut({ data }: Props) {
           fill="#8884d8"
           dataKey="value"
         >
-          <Legend/>
           <Tooltip/>
+          <Legend/>
           {data.map((entry, index) => (
             <Cell key={`cell-${entry.name}`} fill={COLORS[index % COLORS.length]} />
           ))}

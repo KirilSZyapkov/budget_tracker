@@ -63,7 +63,7 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
 
 
   return (
-    <section className="flex flex-col gap-6 w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
+    <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <MonthlyBreakdownDonut data={donutData} />
       <IncomeVsSpentLine series={series} />
       <CategoryStackedBar data={expensesByCat} title="Expenses by Category" />
