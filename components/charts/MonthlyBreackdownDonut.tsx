@@ -12,7 +12,7 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A020F0"];
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
   if (!percent || percent === 0) return null;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.3;
   const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
   const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
 
@@ -35,8 +35,7 @@ export default function MonthlyBreakdownDonut({ data }: Props) {
           cy="50%"
           labelLine={false}
           label={renderCustomizedLabel}
-          outerRadius={120}
-          innerRadius={80}
+          outerRadius={80}
           fill="#8884d8"
           dataKey="value"
         >
