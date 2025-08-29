@@ -106,6 +106,9 @@ export default function DashboardPage() {
           <MonthForm budgetId={currentBudget?.id!} revalidate={revalidate} setRevalidate={setRevalidate} />
         </div>}
       </section>
+      <section className="w-full mx-auto mt-8 px-2 sm:px-0">
+        <ChartsSection budgetId={currentBudget?.id!} monthId={currentMonth?.id!} />
+      </section>
       <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
         <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Budget Overview</h2>
         <div className="flex flex-col sm:flex-row gap-4 mb-4">
@@ -127,9 +130,7 @@ export default function DashboardPage() {
         <h2 className="text-xl sm:text-2xl font-semibold text-blue-700 mb-4">Data List</h2>
         <DataList currentMonth={currentMonth} currentBudget={currentBudget} userId={userId}/>
       </section>
-      <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">
-        <ChartsSection budgetId={currentBudget?.id!} monthId={currentMonth?.id!} />
-      </section>
+      
     </main>
   );
 }

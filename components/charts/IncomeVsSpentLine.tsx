@@ -7,7 +7,7 @@ type Point = { label: string; income: number; spent: number; net: number; };
 
 export default function IncomeVsSpentLine({ series }: { series: Point[] }) {
   return (
-    <Card className="p-4 h-96 w-full border-2 border-red-500">
+    <Card className="p-4 h-96 w-full">
       <h3 className="font-semibold mb-2">Income vs Spent (Monthly)</h3>
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={series}>
