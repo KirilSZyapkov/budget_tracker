@@ -8,7 +8,6 @@ import IncomeVsSpentLine from "@/components/charts/IncomeVsSpentLine";
 
 type OverviewResponse = {
   income: number;
-  bills: number;
   expenses: number; // total expenses excluding bills and saving
   saving: number;
   spent: number; // bills + expenses + saving
@@ -16,12 +15,13 @@ type OverviewResponse = {
   savingsRate: number; // saving / income
 };
 
-type SeriesResponse = { label: string; income: number; spent: number; net: number };
+type SeriesResponse = { month: string; income: number; expenses: number; savings: number };
+type CategoryBreakdownResponse = {month: string; income: number; expenses: number; savings: number};
 
 export default function ChartsSection({ budgetId, monthId }: { budgetId: string, monthId: string }) {
-  const [overview, setOverview] = useState<{ income: number, bills: number, expenses: number, saving: number, spent: number, net: number, savingsRate: number } | null>(null);
-  const [series, setSeries] = useState<{ label: string; income: number; spent: number; net: number }[]>([]);
-  const [expensesByCat, setExpensesByCat] = useState<{ name: string; value: number }[]>([]);
+  const [overview, setOverview] = useState<{ income: number, expenses: number, saving: number, spent: number, net: number, savingsRate: number } | null>(null);
+  const [series, setSeries] = useState<SeriesResponse[]>([]);
+  const [expensesByCat, setExpensesByCat] = useState<CategoryBreakdownResponse[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,14 +29,15 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
     async function load() {
       try {
         setLoading(true);
-        const [ov, ser] = await Promise.all([
+        const [ov, ser, exp] = await Promise.all([
           useApiFetch<OverviewResponse>(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
           useApiFetch<SeriesResponse[]>(`/api/analytics/monthly-series?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load monthly series"),
-          useApiFetch(`/api/analytics/category-breakdown?monthId=${monthId}&type=EXPENSES`),
+          useApiFetch<CategoryBreakdownResponse>(`/api/analytics/category-breakdown?monthId=${monthId}&budgetId=${budgetId}&type=expenses`, { cache: "no-store" }, "Failed to load category breakdown"),
         ]);
         if (!cancel) {
           setOverview(ov);
           setSeries(ser);
+          setExpensesByCat(exp);
         }
       } catch (error: any) {
         console.log(error.message);
@@ -57,7 +58,6 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
 
   const donutData = [
     { name: "Income", value: overview.income },
-    { name: "Bills", value: overview.bills },
     { name: "Expenses", value: overview.expenses },
     { name: "Saving", value: overview.saving },
   ];

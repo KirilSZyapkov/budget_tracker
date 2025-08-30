@@ -23,18 +23,15 @@ export const GET = withErrorHandling(async (req: Request) => {
     .where(and(eq(entries.userId, userId), eq(entries.monthId, monthId), eq(entries.budgetId, budgetId)))
     .groupBy(entries.type);
 
-    
-    
     const byType = Object.fromEntries(rows.map(r => [r.type, Number(r.total || 0)]));
     const income = byType.income || 0;
-    const bills = byType.BILLS || 0;
     const expensesTotal = byType.expenses || 0;
     const saving = byType.savings || 0;
-    const spent = bills + expensesTotal + saving;
+    const spent = expensesTotal + saving;
     const net = income - spent;
     const savingsRate = income > 0 ? saving / income : 0;
     
     console.log("api/analitics/overview 26", byType);
-    return Response.json({ income, bills, expenses: expensesTotal, saving, spent, net, savingsRate });
+    return Response.json({ income, expenses: expensesTotal, saving, spent, net, savingsRate });
 
 });

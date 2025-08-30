@@ -3,6 +3,7 @@ import { getUserIdOrThrow } from "@/lib/auth";
 import db from "@/drizzle/db";
 import { entries } from "@/drizzle/schemas/entries";
 import { and, eq, sql } from "drizzle-orm";
+import { months } from "@/drizzle/schemas/months";
 
 export const GET = withErrorHandling(async (req: Request) => {
   const userId = await getUserIdOrThrow();
@@ -16,15 +17,27 @@ export const GET = withErrorHandling(async (req: Request) => {
 
   const rows = await db
     .select({
-      name: entries.name,
-      total: sql<number>`sum(${entries.amount})`,
+      month: months.month,
+      income: sql<number>`sum(case when ${entries.type}= 'income' then ${entries.amount} else 0 end)`,
+      expenses: sql<number>`sum(case when ${entries.type}= 'expenses' then ${entries.amount} else 0 end)`,
+      savings: sql<number>`sum(case when ${entries.type}= 'savings' then ${entries.amount} else 0 end)`,
     })
     .from(entries)
-    .where(and(eq(entries.budgetId, budgetId), eq(entries.monthId, monthId), eq(entries.type, type)))
-    .groupBy(entries.name)
-    .orderBy(sql`sum(${entries.amount}) desc`);
+    .innerJoin(months, eq(entries.monthId, months.id))
+    .where(and(eq(entries.budgetId, budgetId), eq(entries.userId, userId)))
+    .groupBy(months.month)
+    .orderBy(months.month)
+    .limit(3);
 
-  const data = rows.map(r => ({ name: r.name, value: Number(r.total || 0) }));
+  const data = rows.map(r => ({ 
+    month: `Month ${r.month}`,
+    income: r.income || 0,
+    expenses: r.expenses || 0,
+    savings: r.savings || 0,
+  }));
+
+
+console.log("api/category-breakdown 28", data);
 
   return Response.json(data);
 })

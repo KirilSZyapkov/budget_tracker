@@ -22,16 +22,17 @@ export const GET = withErrorHandling(async (req: Request) => {
       savings: sql<number>`sum(case when ${entries.type} = 'savings' then ${entries.amount} else 0 end)`,
     })
     .from(entries)
-    .innerJoin(months, and(eq(entries.monthId, monthId), eq(entries.budgetId, budgetId)))
-    .where(and(eq(entries.monthId, monthId), eq(entries.budgetId, budgetId)))
+    .innerJoin(months, eq(entries.monthId, months.id))
+    .where(and(eq(entries.budgetId, budgetId), eq(entries.userId, userId)))
     .groupBy(months.month)
     .orderBy(months.month);
 
-  const data = rows.map(r => {
-    const spent = Number(r.expenses || 0) + Number(r.savings || 0);
-    const net = Number(r.income || 0) - spent;
-    return { lable: `${String(r.month).padStart(2, "0")}`, income: Number(r.income || 0), spent, net };
-  });
+  const data = rows.map(r => ({
+    month: String(r.month).padStart(2, '0'),
+    income: Number(r.income || 0),
+    expenses: Number(r.expenses || 0),
+    savings: Number(r.savings || 0),
+  }))
 
   console.log("api/analytics/monthly-series 36", data);
   
