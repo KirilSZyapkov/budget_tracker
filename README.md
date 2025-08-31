@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 💰 Budget Tracker
 
-## Getting Started
+A modern and simple **budget tracking application** built with **Next.js 15, TypeScript, TailwindCSS, Prisma, and Recharts**.  
+It helps you **manage your income and expenses**, visualize your financial data with charts, and keep your monthly budget under control.
 
-First, run the development server:
+👉 [Live Demo](https://budget-tracker-five-rho.vercel.app/)
+
+---
+
+## ✨ Features
+
+- 📊 **Interactive charts** (donut, stacked bar, line) powered by [Recharts](https://recharts.org/)
+- 💵 Track **income** and **expenses** by category and month
+- 📅 Manage **budgets** across multiple months and years
+- 🔐 Authentication & user-specific data
+- 🎨 Clean UI built with [TailwindCSS](https://tailwindcss.com/)
+- ⚡ Fast and optimized with Next.js App Router
+
+---
+
+## 🚀 Tech Stack
+
+- [Next.js 15 (App Router)](https://nextjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [Prisma ORM](https://www.prisma.io/)
+- [Recharts](https://recharts.org/)
+- [React Hook Form](https://react-hook-form.com/)
+- [Zod](https://zod.dev/) (validation)
+- [React Hot Toast](https://react-hot-toast.com/)
+
+---
+
+📈 Roadmap / Future Improvements
+User feedback system (comments, suggestions)
+Donation / Support button (Buy Me a Coffee, Ko-fi)
+Export/Import data (CSV, Excel)
+Multi-language support (i18n)
+Custom currency / themes
+
+🤝 Contributing
+
+Contributions, issues and feature requests are welcome!
+Feel free to open an issue
+
+📜 License
+This project is licensed under the MIT License.
+
+👨‍💻 Author
+Made with ❤️ by Kiril Z.
+
+## 🛠️ Installation & Setup
+Clone the repo:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+git clone https://github.com/KirilSZyapkov/budget_tracker.git
+cd budget_tracker
