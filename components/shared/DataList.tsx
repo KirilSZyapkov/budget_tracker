@@ -7,6 +7,7 @@ import { months } from "@/drizzle/schemas/months";
 import { useState, useEffect } from "react";
 import { useApiFetch } from "@/hooks/useApiFetch";
 import { transformArray } from "@/lib/helpers";
+import ChartsSection from "./ChartsSection";
 
 type Budget = typeof budgets.$inferSelect;
 type Month = typeof months.$inferSelect;
@@ -19,7 +20,8 @@ type Result = {
 
 export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
   const [allEntries, setAllEntries] = useState<Result[]>([]);
-  
+
+
   useEffect(() => {
     async function fetchData() {
       if (!currentBudget?.id || !currentMonth?.id) return;
@@ -43,62 +45,56 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
     fetchData();
   }, [currentBudget?.id, currentMonth?.id]);
 
-  console.log(allEntries);
-  console.log("Current Budget:", currentBudget);
-  console.log("Current Month:", currentMonth);
-  
-
   return (
-    <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
-      {/* Income */}
-      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
-        <h2 className="text-xl font-semibold text-blue-700 mb-2">Income</h2>
-        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="income" setAllEntries={setAllEntries}/>
-        <div className="space-y-2">
-          {allEntries.map(({ type, data }, index) => (
-            type === "income" &&
-            data.map(({name, amount}, index) => (
-              <div key={index} className="flex justify-between items-center border-b pb-2">
-                <p className="text-gray-700">{name}</p>
-                <p className="font-bold text-green-600">{amount}€</p>
-              </div>)
-            )))}
+    <>
+      <section className="w-full mx-auto mt-8 px-2 sm:px-0">
+        <ChartsSection budgetId={currentBudget?.id!} monthId={currentMonth?.id!} allEntries={allEntries.length} />
+      </section>
+      <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
+        {/* Income */}
+        <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
+          <h2 className="text-xl font-semibold text-blue-700 mb-2">Income</h2>
+          <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="income" setAllEntries={setAllEntries} />
+          <div className="space-y-2">
+            {allEntries.map(({ type, data }) => (
+              type === "income" &&
+              data.map(({ name, amount }, index) => (
+                <div key={index} className="flex justify-between items-center border-b pb-2">
+                  <p className="text-gray-700">{name}</p>
+                  <p className="font-bold text-green-600">{amount}€</p>
+                </div>)
+              )))}
+          </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
+          <h2 className="text-xl font-semibold text-blue-700 mb-2">Expenses</h2>
+          <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="expenses" setAllEntries={setAllEntries} />
+          <div className="space-y-2">
+            {allEntries.map(({ type, data }) => (
+              type === "expenses" &&
+              data.map(({ name, amount }, index) => (
+                <div key={index} className="flex justify-between items-center border-b pb-2">
+                  <p className="text-gray-700">{name}</p>
+                  <p className="font-bold text-green-600">{amount}€</p>
+                </div>)
+              )))}
+          </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
+          <h2 className="text-xl font-semibold text-blue-700 mb-2">Savings</h2>
+          <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="savings" setAllEntries={setAllEntries} />
+          <div className="space-y-2">
+            {allEntries.map(({ type, data }, index) => (
+              type === "savings" &&
+              data.map(({ name, amount }, index) => (
+                <div key={index} className="flex justify-between items-center border-b pb-2">
+                  <p className="text-gray-700">{name}</p>
+                  <p className="font-bold text-green-600">{amount}€</p>
+                </div>)
+              )))}
+          </div>
         </div>
       </div>
-      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
-        <h2 className="text-xl font-semibold text-blue-700 mb-2">Expenses</h2>
-        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="expenses" setAllEntries={setAllEntries}/>
-        <div className="space-y-2">
-          {allEntries.map(({ type, data }, index) => (
-            type === "expenses" &&
-            data.map(({name, amount}, index) => (
-              <div key={index} className="flex justify-between items-center border-b pb-2">
-                <p className="text-gray-700">{name}</p>
-                <p className="font-bold text-green-600">{amount}lv</p>
-              </div>)
-            )))}
-        </div>
-      </div>
-      <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4 border-2">
-        <h2 className="text-xl font-semibold text-blue-700 mb-2">Savings</h2>
-        <EntriesForm userId={userId} budgetId={currentBudget?.id} monthId={currentMonth?.id} type="savings" setAllEntries={setAllEntries}/>
-        <div className="space-y-2">
-          {allEntries.map(({ type, data }, index) => (
-            type === "savings" &&
-            data.map(({name, amount}, index) => (
-              <div key={index} className="flex justify-between items-center border-b pb-2">
-                <p className="text-gray-700">{name}</p>
-                <p className="font-bold text-green-600">{amount}lv</p>
-              </div>)
-            )))}
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
-
-// 'income' | 'bills' | 'expenses' | 'saving'
-
-<div className="space-y-2">
-
-</div> 

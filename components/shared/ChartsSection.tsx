@@ -16,9 +16,9 @@ type OverviewResponse = {
 };
 
 type SeriesResponse = { month: string; income: number; expenses: number; savings: number };
-type CategoryBreakdownResponse = {month: string; income: number; expenses: number; savings: number};
+type CategoryBreakdownResponse = { month: string; income: number; expenses: number; savings: number };
 
-export default function ChartsSection({ budgetId, monthId }: { budgetId: string, monthId: string }) {
+export default function ChartsSection({ budgetId, monthId, allEntries }: { budgetId: string, monthId: string, allEntries: number }) {
   const [overview, setOverview] = useState<{ income: number, expenses: number, saving: number, spent: number, net: number, savingsRate: number } | null>(null);
   const [series, setSeries] = useState<SeriesResponse[]>([]);
   const [expensesByCat, setExpensesByCat] = useState<CategoryBreakdownResponse[]>([]);
@@ -48,22 +48,16 @@ export default function ChartsSection({ budgetId, monthId }: { budgetId: string,
     };
     if (budgetId && monthId) load();
     return () => { cancel = true };
-  }, [budgetId, monthId]);
+  }, [budgetId, monthId, allEntries]);
 
   if (loading) return <div className="grid gap-4 md:grid-cols-3"><div className="h-80 rounded-xl bg-muted animate-pulse"></div><div className="h-80 rounded-xl bg-muted animate-pulse"></div><div className="h-80 rounded-xl bg-muted animate-pulse"></div></div>;
   if (!overview) return null;
-
-  console.log(overview);
-
 
   const donutData = [
     { name: "Income", value: overview.income },
     { name: "Expenses", value: overview.expenses },
     { name: "Saving", value: overview.saving },
   ];
-
-  console.log(donutData);
-
 
   return (
     <section className="grid grid-cols-1 lg:grid-cols-3 gap-4">

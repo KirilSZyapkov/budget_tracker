@@ -25,7 +25,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 
 export default function MonthlyBreakdownDonut({ data }: Props) {
   return (
-    <Card className="p-4 w-full">
+    <Card className="p-4 h-96 w-full">
       <h3 className="font-semibold mb-2">Monthly Breakdown</h3>
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
