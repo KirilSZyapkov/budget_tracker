@@ -50,9 +50,11 @@ export default function BudgetForm({ revalidate, setRevalidate }: { revalidate: 
         setLoading(false);
         setRevalidate(!revalidate); // Trigger revalidation
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error creating budget:", error);
-      toast.error(error?.message || "Failed to create budget. Please try again.");
+      if (error instanceof Error) {
+        toast.error(error?.message || "Failed to create budget. Please try again.");
+      }
     } finally {
       setLoading(false);
     }

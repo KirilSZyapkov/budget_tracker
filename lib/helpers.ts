@@ -49,5 +49,5 @@ export function transformArray(arr: Item[]): Result[] {
 }
 
 export function fmtCurrency(amount: number, currency: string = "EUR"):string {
-  return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(parseFloat(amount.toString()));
+  return new Intl.NumberFormat('de-DE', { style: 'currency', currency }).format(parseFloat(amount.toString()));
 }

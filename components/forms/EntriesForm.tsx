@@ -20,14 +20,28 @@ import { entriesZodSchema } from "@/lib/validators";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { transformArray } from "@/lib/helpers";
 
-
+type Result = {
+  data: { name: string; amount: string }[];
+  type: string;
+};
 type Props = {
   userId?: string | null;
   budgetId?: string;
   monthId?: string;
   type?: string; // "income" or "expense";
-  setAllEntries?: React.Dispatch<React.SetStateAction<any[]>>; // Optional setter for entries
-}
+  setAllEntries?: React.Dispatch<React.SetStateAction<Result[]>>; // Optional setter for entries
+};
+type Response= {
+    id: string;
+    userId: string;
+    monthId: string;
+    budgetId: string;
+    amount: string;
+    name: string;
+    type: string;
+    createdAt: Date | null;
+    updatedAt: Date | null;
+};
 
 export default function EntriesForm({ userId, budgetId, monthId, type, setAllEntries }: Props) {
   const [loading, setLoading] = useState(false);
@@ -57,7 +71,7 @@ export default function EntriesForm({ userId, budgetId, monthId, type, setAllEnt
         throw new Error("Name and amount are required");
       };
 
-      const response: any = await аpiFetch("/api/entries", {
+      const response = await аpiFetch<Response>("/api/entries", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

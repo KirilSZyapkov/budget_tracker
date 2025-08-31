@@ -1,22 +1,22 @@
 import { AppError } from "@/lib/errors";
 
 export function withErrorHandling(
-  handle: (req: Request, ctx: any)=> Promise<Response>
+  handle: (req: Request) => Promise<Response>
 ) {
-  return async (req: Request, ctx: any)=>{
+  return async (req: Request) => {
     try {
-      return await handle(req, ctx);
-    } catch (error: any) {
+      return await handle(req);
+    } catch (error: unknown) {
       console.log("Error in API handler:", error);
 
       const status = error instanceof AppError ? error.status : 500;
-      const message = error.message || "Internal Server Error";
+      const message = error instanceof Error ? error.message : "Internal Server Error";
 
-      return new Response(JSON.stringify({error: message}),{
+      return new Response(JSON.stringify({ error: message }), {
         status,
-        headers: {"Content-Type": "application/json"}
+        headers: { "Content-Type": "application/json" }
       })
-      
+
     }
   }
 }

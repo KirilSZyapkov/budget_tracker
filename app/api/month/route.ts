@@ -4,7 +4,7 @@ import { getUserMonths, createMonth } from "@/lib/services/monthService"
 import { monthZodSchema } from "@/lib/validators";
 
 export const GET = withErrorHandling(async (req: Request) => {
-  const userId = await getUserIdOrThrow();
+  
   const { searchParams } = new URL(req.url);
   const budgetId = searchParams.get("budgetId");
   const result = await getUserMonths(budgetId!);
@@ -13,7 +13,7 @@ export const GET = withErrorHandling(async (req: Request) => {
 })
 
 export const POST = withErrorHandling(async (req) => {
-  const userId = await getUserIdOrThrow();
+  
   const body = await req.json();
   const { budgetId } = body;
   if (!budgetId) {

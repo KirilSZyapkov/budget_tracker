@@ -1,11 +1,9 @@
 "use client";
 
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid, Rectangle } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
 import { Card } from "@/components/ui/card";
 
-
 type Row = {month: string; income: number; expenses: number; savings: number};
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A020F0"];
 
 export default function CategoryStackedBar({ data, title = "Expenses by Category" }: { data: Row[]; title?: string }) {
   return (

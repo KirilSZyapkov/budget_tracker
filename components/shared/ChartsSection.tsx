@@ -39,9 +39,8 @@ export default function ChartsSection({ budgetId, monthId, allEntries }: { budge
           if (ser) setSeries(ser);
           if (exp) setExpensesByCat(exp);
         }
-      } catch (error: any) {
-        console.log(error.message);
-
+      } catch (error) {
+        console.log(error);
       } finally {
         if (!cancel) setLoading(false);
       }

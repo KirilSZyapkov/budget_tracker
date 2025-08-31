@@ -1,6 +1,7 @@
 "use client";
 
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { PieLabelRenderProps } from "recharts";
 import { Card } from "@/components/ui/card";
 
 type Props = {
@@ -10,14 +11,15 @@ type Props = {
 const RADIAN = Math.PI / 180;
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#A020F0"];
 
-const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieLabelRenderProps) => {
   if (!percent || percent === 0) return null;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.3;
-  const x = cx + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
-  const y = cy + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
+  if(!cx || !cy || !innerRadius || !outerRadius) return null;
+  const radius = Number(innerRadius) + (Number(outerRadius) - Number(innerRadius)) * 0.3;
+  const x = Number(cx) + radius * Math.cos(-(midAngle ?? 0) * RADIAN);
+  const y = Number(cy) + radius * Math.sin(-(midAngle ?? 0) * RADIAN);
 
   return (
-    <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+    <text x={x} y={y} fill="white" textAnchor={x > Number(cx) ? 'start' : 'end'} dominantBaseline="central">
       {`${((percent) * 100).toFixed(0)}%`}
     </text>
   );

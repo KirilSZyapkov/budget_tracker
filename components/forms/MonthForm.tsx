@@ -58,9 +58,9 @@ export default function MonthForm({ budgetId, revalidate, setRevalidate }: Props
         setLoading(false);
         setRevalidate(!revalidate); // Trigger revalidation
       }
-    } catch (error: any) {
+    } catch (error) {
       console.error("Error creating month:", error);
-      toast.error(error?.message || "Failed to create month. Please try again.");
+      toast.error("Failed to create month. Please try again.");
     } finally {
       setLoading(false);
     }

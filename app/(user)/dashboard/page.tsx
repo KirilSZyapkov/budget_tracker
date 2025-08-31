@@ -54,7 +54,7 @@ export default function DashboardPage() {
     fetchData();
   }, [revalidate]);
 
-  function onChange(e:any, title: string) {
+  function onChange(e:string, title: string) {
   
     switch (title.toLowerCase()) {
       case "month":
@@ -102,7 +102,7 @@ export default function DashboardPage() {
           <BudgetForm revalidate={revalidate} setRevalidate={setRevalidate} />
         </div>
         {currentBudget?.id && <div className="bg-white rounded-xl shadow-md p-4 flex flex-col gap-4">
-          <MonthForm budgetId={currentBudget?.id!} revalidate={revalidate} setRevalidate={setRevalidate} />
+          <MonthForm budgetId={currentBudget?.id} revalidate={revalidate} setRevalidate={setRevalidate} />
         </div>}
       </section>
       <section className="w-full max-w-3xl mx-auto mt-8 px-2 sm:px-0">

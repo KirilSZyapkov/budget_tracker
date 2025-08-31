@@ -20,6 +20,8 @@ type Result = {
 
 export default function DataList({ currentBudget, currentMonth, userId }: { currentBudget?: Budget, currentMonth?: Month, userId?: string | null }) {
   const [allEntries, setAllEntries] = useState<Result[]>([]);
+  const budgetId = currentBudget?.id;
+  const monthId = currentMonth?.id;
 
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
   return (
     <>
       <section className="w-full mx-auto mt-8 px-2 sm:px-0">
-        <ChartsSection budgetId={currentBudget?.id!} monthId={currentMonth?.id!} allEntries={allEntries.length} />
+        {(budgetId && monthId) && <ChartsSection budgetId={budgetId} monthId={monthId} allEntries={allEntries.length} />}
       </section>
       <div className="w-full max-w-4xl mx-auto px-2 py-6 grid grid-cols-1 gap-6">
         {/* Income */}

@@ -1,6 +1,6 @@
 "use client";
 
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, Cell } from "recharts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Card } from "@/components/ui/card";
 
 type Point = { month: string; income: number; expenses: number; savings: number };
