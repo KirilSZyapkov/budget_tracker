@@ -5,7 +5,7 @@ import { entries } from "@/drizzle/schemas/entries";
 import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schemas/months";
 import { useState, useEffect } from "react";
-import { useApiFetch } from "@/hooks/useApiFetch";
+import { аpiFetch } from "@/hooks/аpiFetch";
 import { transformArray } from "@/lib/helpers";
 import ChartsSection from "./ChartsSection";
 
@@ -26,7 +26,7 @@ export default function DataList({ currentBudget, currentMonth, userId }: { curr
     async function fetchData() {
       if (!currentBudget?.id || !currentMonth?.id) return;
 
-      const responseEntries = await useApiFetch(`/api/entries?budgetId=${currentBudget?.id}&monthId=${currentMonth?.id}`, {
+      const responseEntries = await аpiFetch(`/api/entries?budgetId=${currentBudget?.id}&monthId=${currentMonth?.id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

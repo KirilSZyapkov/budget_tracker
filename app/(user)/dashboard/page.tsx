@@ -8,7 +8,6 @@ import { budgets } from "@/drizzle/schemas/budgets";
 import { months } from "@/drizzle/schema";
 import SelectField from "@/components/shared/SelectField";
 import DataList from "@/components/shared/DataList";
-import ChartsSection from "@/components/shared/ChartsSection";
 
 type Budget = typeof budgets.$inferSelect;
 type Month = typeof months.$inferSelect;

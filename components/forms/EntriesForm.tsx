@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { useApiFetch } from "@/hooks/useApiFetch";
+import { аpiFetch } from "@/hooks/аpiFetch";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { transformArray } from "@/lib/helpers";
 
 
-type Props={
+type Props = {
   userId?: string | null;
   budgetId?: string;
   monthId?: string;
@@ -51,14 +51,14 @@ export default function EntriesForm({ userId, budgetId, monthId, type, setAllEnt
       const name = data.name.trim();
       const amount = data.amount.trim();
 
-      if (name==="" || amount ==="") {
+      if (name === "" || amount === "") {
         toast.error("Name and amount are required");
         setLoading(false);
         throw new Error("Name and amount are required");
       };
 
-      const response: any = await useApiFetch("/api/entries",{
-        method:"POST",
+      const response: any = await аpiFetch("/api/entries", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -66,7 +66,7 @@ export default function EntriesForm({ userId, budgetId, monthId, type, setAllEnt
         cache: "no-store",
       }, "Failed to create income");
 
-      if(!response){
+      if (!response) {
         throw new Error("Failed to create income");
       } else {
         const newEntry = transformArray([response]);

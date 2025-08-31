@@ -1,6 +1,6 @@
 import { toast } from "sonner";
 
-export async function useApiFetch<T>(
+export async function аpiFetch<T>(
   url: string,
   options?: RequestInit,
   errorMessage ="An error occurred while fetching data"

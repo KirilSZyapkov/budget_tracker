@@ -18,9 +18,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { budgetZodSchema } from "@/lib/validators";
 import { toast } from "sonner";
-import { useApiFetch } from "@/hooks/useApiFetch";
+import { аpiFetch } from "@/hooks/аpiFetch";
 
-export default function BudgetForm({revalidate, setRevalidate}: {revalidate: boolean, setRevalidate: (loading: boolean) => void}) {
+export default function BudgetForm({ revalidate, setRevalidate }: { revalidate: boolean, setRevalidate: (loading: boolean) => void }) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof budgetZodSchema>>({
@@ -34,7 +34,7 @@ export default function BudgetForm({revalidate, setRevalidate}: {revalidate: boo
     setLoading(true);
     try {
       const year = data.year;
-      const response = await useApiFetch("/api/budgets", {
+      const response = await аpiFetch("/api/budgets", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

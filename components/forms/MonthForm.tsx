@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-import { useApiFetch } from "@/hooks/useApiFetch";
+import { аpiFetch } from "@/hooks/аpiFetch";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -25,13 +25,13 @@ type Props = {
   setRevalidate: (loading: boolean) => void;
 }
 
-export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) {
+export default function MonthForm({ budgetId, revalidate, setRevalidate }: Props) {
   const [loading, setLoading] = useState(false);
-  
+
   const form = useForm<z.infer<typeof monthZodSchema>>({
     resolver: zodResolver(monthZodSchema),
     defaultValues: {
-      month: "", 
+      month: "",
       salaryDay: ""
     },
   })
@@ -41,7 +41,7 @@ export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) 
     try {
       const month = data.month;
       const salaryDay = data.salaryDay;
-      const response = await useApiFetch("/api/month", {
+      const response = await аpiFetch("/api/month", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) 
         body: JSON.stringify({ month, salaryDay, budgetId }),
         cache: "no-store",
       }, "Failed to create month");
-      
+
       if (!response) {
         throw new Error("Failed to create month");
       } else {
@@ -90,7 +90,7 @@ export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) 
               </FormDescription>
               <FormMessage />
             </FormItem>
-            
+
           )}
         />
         <FormField
@@ -107,7 +107,7 @@ export default function MonthForm({budgetId, revalidate, setRevalidate}: Props) 
               </FormDescription>
               <FormMessage />
             </FormItem>
-            
+
           )}
         />
         <Button type="submit" className="cursor-pointer" disabled={loading}>{loading ? "Creating..." : "Submit"}</Button>

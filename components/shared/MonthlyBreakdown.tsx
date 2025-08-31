@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import MonthlyBreakdownDonut from "../charts/MonthlyBreackdownDonut";
-import { useApiFetch } from "@/hooks/useApiFetch";
+import { аpiFetch } from "@/hooks/аpiFetch";
 
 type Overview = {
   income: number; bills: number; expenses: number; saving: number;
@@ -20,7 +20,7 @@ export default function MonthlyBreakdown({ monthId }: { monthId: string }) {
       try {
         setLoading(true);
         setErr(null);
-        const res = await useApiFetch("/api/analytics/overview?monthId=" + monthId, {
+        const res = await аpiFetch<any>("/api/analytics/overview?monthId=" + monthId, {
           cache: "no-store"
         }, "Faild to load chart data");
         if (!res.ok) throw new Error(await res.text());
@@ -35,17 +35,17 @@ export default function MonthlyBreakdown({ monthId }: { monthId: string }) {
       }
     };
     load();
-    return ()=> {cancel = true}
+    return () => { cancel = true }
   }, [monthId]);
 
-  if(err) return <div className="h-80 w-full rounded-2xl border p-4">Error: {err}</div>;
-  if(!overview) return null;
+  if (err) return <div className="h-80 w-full rounded-2xl border p-4">Error: {err}</div>;
+  if (!overview) return null;
 
   const donutData = [
-    { name: "Income",  value: overview.income },
-    { name: "Bills",   value: overview.bills },
-    { name: "Expenses",value: overview.expenses },
-    { name: "Saving",  value: overview.saving },
+    { name: "Income", value: overview.income },
+    { name: "Bills", value: overview.bills },
+    { name: "Expenses", value: overview.expenses },
+    { name: "Saving", value: overview.saving },
   ];
 
   return <MonthlyBreakdownDonut data={donutData} />;

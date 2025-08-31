@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useApiFetch } from "@/hooks/useApiFetch";
+import { аpiFetch } from "@/hooks/аpiFetch";
 import MonthlyBreakdownDonut from "@/components/charts/MonthlyBreackdownDonut";
 import CategoryStackedBar from "@/components/charts/CategoryStackedBar";
 import IncomeVsSpentLine from "@/components/charts/IncomeVsSpentLine";
@@ -30,14 +30,14 @@ export default function ChartsSection({ budgetId, monthId, allEntries }: { budge
       try {
         setLoading(true);
         const [ov, ser, exp] = await Promise.all([
-          useApiFetch<OverviewResponse>(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
-          useApiFetch<SeriesResponse[]>(`/api/analytics/monthly-series?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load monthly series"),
-          useApiFetch<CategoryBreakdownResponse[]>(`/api/analytics/category-breakdown?monthId=${monthId}&budgetId=${budgetId}&type=expenses`, { cache: "no-store" }, "Failed to load category breakdown"),
+          аpiFetch<OverviewResponse>(`/api/analytics/overview?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load overview data"),
+          аpiFetch<SeriesResponse[]>(`/api/analytics/monthly-series?monthId=${monthId}&budgetId=${budgetId}`, { cache: "no-store" }, "Failed to load monthly series"),
+          аpiFetch<CategoryBreakdownResponse[]>(`/api/analytics/category-breakdown?monthId=${monthId}&budgetId=${budgetId}&type=expenses`, { cache: "no-store" }, "Failed to load category breakdown"),
         ]);
         if (!cancel) {
           setOverview(ov);
-          if(ser) setSeries(ser);
-          if(exp) setExpensesByCat(exp);
+          if (ser) setSeries(ser);
+          if (exp) setExpensesByCat(exp);
         }
       } catch (error: any) {
         console.log(error.message);
